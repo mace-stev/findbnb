@@ -1,8 +1,17 @@
-# `<name of application here>`
+# findbnb
 
-## Database Schema Design
+<!--!!START SILENT -->
+![airbnb-database-schema]
 
-![image](https://github.com/user-attachments/assets/3a7cf3db-3c18-42ac-b389-692da36ea357)
+[airbnb-database-schema]: https://appacademy-open-assets.s3.us-west-1.amazonaws.com/Modular-Curriculum/content/week-12/airbnb-db-schema.png
+[airbnb-db-diagram-info]: https://appacademy-open-assets.s3.us-west-1.amazonaws.com/Modular-Curriculum/content/week-12/airbnb-db-diagram-info.txt
+<!--!!END -->
+<!--!!ADD -->
+<!-- `<insert database schema design here>` -->
+<!--!!END_ADD -->
+
+
+
 
 ## API Documentation
 
