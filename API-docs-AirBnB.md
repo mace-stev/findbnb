@@ -1,4 +1,4 @@
-# `<name of application here>`
+# findbnb
 
 <!--!!START SILENT -->
 ![airbnb-database-schema]
