@@ -1,4 +1,4 @@
-# `<name of application here>`
+# FindBNB
 
 ## Database Schema Design
 

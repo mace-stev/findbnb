@@ -10,11 +10,11 @@ const { environment } = require('./config');
 const isProduction = environment === 'production';
 const app = express();
 const routes = require('./routes')
-app.use(routes)
-app.use(morgan('dev'));
+
+app.use(morgan('dev'))
 app.use(cookieParser());
 app.use(express.json());
-a
+
 
 if (!isProduction) {
     
@@ -38,6 +38,7 @@ if (!isProduction) {
       }
     })
   );
+  app.use(routes)
   app.use((_req, _res, next) => {
     const err = new Error("The requested resource couldn't be found.");
     err.title = "Resource Not Found";
@@ -66,5 +67,6 @@ if (!isProduction) {
       errors: err.errors,
       stack: isProduction ? null : err.stack
     });
+   
   });
   module.exports = app
