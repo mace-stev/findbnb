@@ -11,10 +11,10 @@ const router = express.Router();
 router.post(
     '/spots',
     async (req, res) => {
-        router.use(requireAuth)
         const { address, city, state, country, lat, lng, name, description, price } = req.body;
-        const user= await fetch('/session')
-        const ownerId=user.id
+        const ownerId= req.user.id
+        
+    
         const spot = await Spot.create({ ownerId, address, city, state, country, lat, lng, name, description, price });
 
 
