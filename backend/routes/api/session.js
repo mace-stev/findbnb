@@ -7,17 +7,16 @@ const { User } = require('../../db/models');
 
 const router = express.Router();
 
-// Log in
-router.post(
-    '/',
-    async (req, res, next) => {
-      const { credential, password } = req.body;
+// Log in 
+router.post('/', async (req, res, next) => {  
+      const { username, password } = req.body;
+      console.log(req.body);
 
       const user = await User.unscoped().findOne({
         where: {
           [Op.or]: {
-            username: credential,
-            email: credential
+            username: username,
+            email: username
           }
         }
       });
