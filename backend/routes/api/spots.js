@@ -6,10 +6,31 @@ const { Spot } = require('../../db/models');
 
 const router = express.Router();
 
-// Sign up
+router.get('/', async(req, res)=>{
+    const allSpots= await Spot.findAll()
+    res.json(allSpots)
+})
 
+
+router.get('/:spotId', async(req, res)=>{
+    const oneSpot= await Spot.findOne({
+        where:{
+            id: req.params.spotId
+        }
+    })
+    res.json(oneSpot)
+})
+
+router.get('/current', async(req, res)=>{
+    const oneSpot= await Spot.findAll({
+        where:{
+            ownerId: req.user.id
+        }
+    })
+    res.json(oneSpot)
+})
 router.post(
-    '/spots',
+    '/',
     async (req, res) => {
         const { address, city, state, country, lat, lng, name, description, price } = req.body;
         const ownerId= req.user.id
