@@ -10,7 +10,15 @@ router.get('/', async(req, res)=>{
     const allSpots= await Spot.findAll()
     res.json(allSpots)
 })
-
+router.get('/current', async(req, res)=>{
+    console.log(req.user.id)
+    const oneSpot= await Spot.findAll({
+        where:{
+            ownerId: req.user.id
+        }
+    })
+    res.json(oneSpot)
+})
 
 router.get('/:spotId', async(req, res)=>{
     const oneSpot= await Spot.findOne({
@@ -21,14 +29,7 @@ router.get('/:spotId', async(req, res)=>{
     res.json(oneSpot)
 })
 
-router.get('/current', async(req, res)=>{
-    const oneSpot= await Spot.findAll({
-        where:{
-            ownerId: req.user.id
-        }
-    })
-    res.json(oneSpot)
-})
+
 router.post(
     '/',
     async (req, res) => {
