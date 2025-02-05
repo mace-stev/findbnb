@@ -5,12 +5,13 @@ const { Model, Validator } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
-      // define association here
+    User.hasMany(models.Booking, {
+      foreignKey: "userId",
+    })
     }
   }
 
-  User.init(
-    {
+  User.init({
       firstName: {
         type: DataTypes.STRING(30),
         allowNull: false,
@@ -37,8 +38,7 @@ module.exports = (sequelize, DataTypes) => {
         },
 
       },
-
-      username: {
+       username: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,

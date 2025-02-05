@@ -9,19 +9,19 @@ const router = express.Router();
 
 // Log in 
 router.post('/', async (req, res, next) => {  
-      const { username, password } = req.body;
+      const { credential, password } = req.body;
       console.log(req.body);
 
       const user = await User.unscoped().findOne({
         where: {
           [Op.or]: {
-            username: username,
-            email: username
+            username: credential,
+            email: credential
           }
         }
       });
 
-      if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
+      if (!credential || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
         const err = new Error('Login failed');
         err.status = 401;
         err.title = 'Login failed';

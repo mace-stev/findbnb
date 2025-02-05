@@ -1,23 +1,34 @@
 const { Model, DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-  class ReviewImage extends Model {
+  class Review extends Model {
     static associate(models) {
-   // define association here
+      Review.belongsTo(models.User, { 
+        foreignKey: 'userId' });
+      Review.belongsTo(models.Spot, {
+         foreignKey: 'spotId' });
+      Review.hasMany(models.ReviewImage, 
+        { foreignKey: 'reviewId' });
     }
   }
-  ReviewImage.init({
-    url: {
-      type: DataTypes.STRING,
+  
+  Review.init({
+    content: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    rating: {
+      type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
-        isUrl: true,
+        min: 1,
+        max: 5,
       },
     },
   }, {
     sequelize,
-    modelName: 'ReviewImage',
+    modelName: 'Review',
   });
 
-  return ReviewImage;
+  return Review;
 };

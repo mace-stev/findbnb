@@ -3,17 +3,28 @@ const { Model, DataTypes } = require('sequelize');
 module.exports = (sequelize) => {
   class SpotImage extends Model {
     static associate(models) {
-      // define association here
+    SpotImage.belongsTo(models.Spot, {
+      foreignKey: "spotId",
+      onDelete: "CASCADE",
+    })
     }
   }
-  
   SpotImage.init({
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
     url: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         isUrl: true,
       },
+    },
+    isPreview: {
+      type: DataTypes.BOOLEAN,
+      allowNull:false
     },
   }, {
     sequelize,

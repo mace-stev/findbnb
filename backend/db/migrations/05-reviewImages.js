@@ -12,12 +12,17 @@ module.exports = {
       },
       reviewId: {
         type: Sequelize.INTEGER,
+        allownull: false
       },
       url: {
         type: Sequelize.STRING,
-        allownull: false
-        
-      },
+        allownull: false,
+        validate:{
+          isUrl: 
+            true,
+            notEmpty: true
+        },
+     },
       createdAt: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
