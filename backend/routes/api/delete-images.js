@@ -2,7 +2,6 @@ const express = require("express");
 
 const { restoreUser, requireAuth } = require("../../utils/auth");
 const { Spot, SpotImage } = require("../../db/models");
-const { EmptyResultError } = require("sequelize");
 
 const router = express.Router();
 
