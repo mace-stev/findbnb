@@ -7,7 +7,49 @@ const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const router = express.Router();
 
-// Sign up
+
+router.get("/", async (req, res, next) => {
+    try {
+      const allSpots = await Spot.findAll();
+      res.json(allSpots);
+    } catch (e) {
+      next(e);
+    }
+  });
+  
+  
+  router.get("/current", async (req, res, next) => {
+    try {
+     
+      if (!req.user.id) {
+        const userError = new Error("User must be signed in");
+        userError.status = 403;
+        throw userError;
+      }
+      const oneSpot = await Spot.findAll({
+        where: {
+          ownerId: req.user.id,
+        },
+      });
+      res.json(oneSpot);
+    } catch (e) {
+      next(e);
+    }
+  });
+  
+  router.get("/:spotId", async (req, res, next) => {
+    try {
+      const oneSpot = await Spot.findOne({
+        where: {
+          id: req.params.spotId,
+        },
+      });
+      res.json(oneSpot);
+    } catch (e) {
+      next(e);
+    }
+  });
+  
 
 router.post(
     '/spots',
