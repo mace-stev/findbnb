@@ -16,6 +16,25 @@ module.exports = (sequelize) => {
     content: {
       type: DataTypes.TEXT,
       allowNull: false,
+      validate: {
+        notEmpty: true,
+        len:[100, 500]
+      }
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allownull: false,
+      references: {
+        Model: "Users",
+        Key: "id"
+      }
+    },
+    spotId: {
+      type: DataTypes.INTEGER,
+      references: {
+        Model: "Spots",
+        Key: "id"
+      }
     },
     rating: {
       type: DataTypes.INTEGER,

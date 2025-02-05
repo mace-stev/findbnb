@@ -23,7 +23,7 @@ module.exports = (sequelize) => {
       },
     },
     isPreview: {
-      type: DataTypes.BOOLEAN,
+      type: da.BOOLEAN,
       allowNull:false
     },
   }, {
