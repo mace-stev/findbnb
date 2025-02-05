@@ -1,8 +1,16 @@
 'use strict';
 
+const { Spot } = require('../models');
+const bcrypt = require("bcryptjs");
+
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;  // define your schema in options object
+}
+
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.bulkInsert('Spots', [
+    await Spot.bulkCreate([
       {
         ownerId: 1,
         address: "123 Disney Lane",
@@ -14,8 +22,6 @@ module.exports = {
         name: "App Academy",
         description: "Place where web developers are created",
         price: 123,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         ownerId: 2,
@@ -28,8 +34,6 @@ module.exports = {
         name: "Hotel California",
         description: "What a lovely place",
         price: 999,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         ownerId: 3,
@@ -40,14 +44,17 @@ module.exports = {
         lat: 33.7645358,
         lng: -122.4730327,
         name: "Studio",
-        description: "A cozy studio for one",
-        price: 450,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    ]);
+        description: "blah blah blah",
+        price: 567,
+      }
+    ], { validate: true });
   },
+
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('Spots', null, {});
+    options.tableName = 'Spots';
+    const Op = Sequelize.Op;
+    return queryInterface.bulkDelete(options, {
+      name: { [Op.in]: ['App Academy', 'Hotel California', 'Studio'] }
+    }, {});
   }
 };
