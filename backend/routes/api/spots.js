@@ -16,9 +16,10 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+
 router.get("/current", async (req, res, next) => {
   try {
-    console.log(req.user.id);
+   
     if (!req.user.id) {
       const userError = new Error("User must be signed in");
       userError.status = 403;
@@ -108,6 +109,7 @@ router.post("/:spotId/images", requireAuth, async (req, res, next) => {
 
     if (spot.ownerId !== req.user.id) {
       return res.status(403).json({ message: "Forbidden" });
+
     }
 
     const newImage = await SpotImage.create({
