@@ -7,17 +7,34 @@ const { Spot } = require('../../db/models');
 const router = express.Router();
 
 router.get('/', async(req, res)=>{
+    try{
+        
     const allSpots= await Spot.findAll()
     res.json(allSpots)
+    catch(e){
+        next(e);    
+    }
 })
 router.get('/current', async(req, res)=>{
+    try{
+        
     console.log(req.user.id)
+        if(!req.user.id){
+            const userError = new Error("User must be signed in")
+            userError.status = 403;
+            throw userError;
+            
+        }
     const oneSpot= await Spot.findAll({
         where:{
             ownerId: req.user.id
         }
     })
     res.json(oneSpot)
+    catch(e){
+        next(e);
+        
+    }
 })
 
 router.get('/:spotId', async(req, res)=>{
