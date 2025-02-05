@@ -1,10 +1,10 @@
-const express = require('express');
+const express = require("express");
 
-
-const { restoreUser, requireAuth } = require('../../utils/auth');
-const { Spot } = require('../../db/models');
+const { restoreUser, requireAuth } = require("../../utils/auth");
+const { Spot, SpotImage } = require("../../db/models");
 
 const router = express.Router();
+
 
 router.get('/', async(req, res)=>{
     try{
@@ -77,5 +77,31 @@ router.post(
         
     }
 );
+  
+  router.post("/:spotId/images", requireAuth, async (req, res) => {
+  const { spotId } = req.params;
+  const { url, preview } = req.body;
+
+  const spot = await Spot.findByPk(spotId);
+  if (!spot) {
+    return res.status(404).json({ message: "Spot couldn't be found" });
+  }
+
+  if (spot.ownerId !== req.user.id) {
+    return res.status(403).json({ message: "Forbidden" });
+  }
+
+  const newImage = await SpotImage.create({
+    spotId,
+    url,
+    preview,
+  });
+
+  return res.status(200).json({
+    id: newImage.id,
+    url: newImage.url,
+    preview: newImage.preview,
+  });
+});
 
 module.exports = router;
