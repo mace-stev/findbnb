@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Spot extends Model {
     /**
@@ -10,23 +8,68 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Spot.hasMany(models.SpotImage, {
+        foreignKey: "spotId",
+        onDelete: "CASCADE",
+      });
     }
   }
-  Spot.init({
-    ownerId: DataTypes.INTEGER,
-    address: DataTypes.STRING,
-    city: DataTypes.STRING,
-    state: DataTypes.STRING,
-    country: DataTypes.STRING,
-    lat: DataTypes.DECIMAL,
-    lng: DataTypes.DECIMAL,
-    name: DataTypes.STRING,
-    description: DataTypes.TEXT,
-    price: DataTypes.DECIMAL
-  }, {
-    sequelize,
-    modelName: 'Spot',
-  });
+  Spot.init(
+    {
+      ownerId: {
+        type: DataTypes.INTEGER,
+      },
+      address: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      city: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      state: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      country: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      lat: {
+        type: DataTypes.DECIMAL,
+        validate: {
+          min: -90,
+          max: 90,
+        },
+      },
+      lng: {
+        type: DataTypes.DECIMAL,
+        validate: {
+          min: -180,
+          max: 180,
+        },
+      },
+      name: {
+        type: DataTypes.STRING,
+        validate: {
+          len: [0, 50],
+        },
+      },
+      description: {
+        allowNull: false,
+        type: DataTypes.TEXT,
+      },
+      price: {
+        type: DataTypes.DECIMAL,
+        validate: {
+          min: 0,
+        },
+      },
+    },
+    {
+      sequelize,
+      modelName: "Spot",
+    }
+  );
   return Spot;
 };

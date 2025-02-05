@@ -1,29 +1,41 @@
-const express = require('express');
+const express = require("express");
 
-
-const { restoreUser, requireAuth } = require('../../utils/auth');
-const { Spot, SpotImage } = require('../../db/models');
+const { restoreUser, requireAuth } = require("../../utils/auth");
+const { Spot, SpotImage } = require("../../db/models");
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
-    try {
-        const allSpots = await Spot.findAll()
-        res.json(allSpots)
-    } catch (err) {
-        next(err)
+
+router.get('/', async(req, res)=>{
+    try{
+        
+    const allSpots= await Spot.findAll()
+    res.json(allSpots)
+    }
+    catch(e){
+        next(e);    
     }
 })
-router.get('/current', async (req, res) => {
-    try {
-        const oneSpot = await Spot.findAll({
-            where: {
-                ownerId: req.user.id
-            }
-        })
-        res.json(oneSpot)
-    } catch (err) {
-        next(err)
+router.get('/current', async(req, res)=>{
+    try{
+        
+    console.log(req.user.id)
+        if(!req.user.id){
+            const userError = new Error("User must be signed in")
+            userError.status = 403;
+            throw userError;
+            
+        }
+    const oneSpot= await Spot.findAll({
+        where:{
+            ownerId: req.user.id
+        }
+    })
+    res.json(oneSpot)
+}
+    catch(e){
+        next(e);
+        
     }
 })
 
@@ -101,5 +113,31 @@ router.post(
 
     }
 );
+  
+  router.post("/:spotId/images", requireAuth, async (req, res) => {
+  const { spotId } = req.params;
+  const { url, preview } = req.body;
+
+  const spot = await Spot.findByPk(spotId);
+  if (!spot) {
+    return res.status(404).json({ message: "Spot couldn't be found" });
+  }
+
+  if (spot.ownerId !== req.user.id) {
+    return res.status(403).json({ message: "Forbidden" });
+  }
+
+  const newImage = await SpotImage.create({
+    spotId,
+    url,
+    preview,
+  });
+
+  return res.status(200).json({
+    id: newImage.id,
+    url: newImage.url,
+    preview: newImage.preview,
+  });
+});
 
 module.exports = router;
