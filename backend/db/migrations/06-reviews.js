@@ -13,21 +13,21 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
         allownull: false,
-        autoIncrement: true 
+        autoIncrement: true
       },
       userId: {
         type: Sequelize.INTEGER,
         allownull: false,
         references: {
-          Model: "Users",
-          Key: "id"
+          model: "Users",
+          key: "id"
         }
       },
       spotId: {
         type: Sequelize.INTEGER,
         references: {
-          Model: "Spots",
-          Key: "id"
+          model: "Spots",
+          key: "id"
         }
       },
       content: {
