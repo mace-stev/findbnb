@@ -41,9 +41,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           isBeforeEndDate(value) {
-            if (this.endDate && value >= this.endDate) {
+            if (this.endDate <= this.startDate) {
               throw new Error("startDate must be before endDate");
             }
+              
           },
         },
       },
@@ -51,17 +52,8 @@ module.exports = (sequelize, DataTypes) => {
       endDate: {
         type: DataTypes.DATE,
         allowNull: false,
-      },
-      createdAt: {
-        allowNull: false,
-        type: DataTypes.DATE,
-        // defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
-      },
-      updatedAt: {
-        allowNull: false,
-        type: DataTypes.DATE,
-        // defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
-      },
+      }
+      
     },
     {
       sequelize,

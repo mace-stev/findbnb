@@ -13,12 +13,12 @@ module.exports = (sequelize) => {
   }
 
   Review.init({
-    content: {
+    review: {
       type: DataTypes.TEXT,
       allowNull: false,
       validate: {
         notEmpty: true,
-        len:[100, 500]
+        len:[1, 500]
       }
     },
     userId: {

@@ -30,7 +30,7 @@ module.exports = {
           key: "id"
         }
       },
-      content: {
+      review: {
         type: Sequelize.TEXT,
         allownull: false,
         validate: {
