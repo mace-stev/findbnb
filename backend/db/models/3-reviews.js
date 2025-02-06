@@ -3,22 +3,22 @@ const { Model, DataTypes } = require('sequelize');
 module.exports = (sequelize) => {
   class Review extends Model {
     static associate(models) {
-      Review.belongsTo(models.User, { 
+      Review.belongsTo(models.User, {
         foreignKey: 'userId' });
       Review.belongsTo(models.Spot, {
          foreignKey: 'spotId' });
-      Review.hasMany(models.ReviewImage, 
+      Review.hasMany(models.ReviewImage,
         { foreignKey: 'reviewId' });
     }
   }
-  
+
   Review.init({
-    content: {
+    review: {
       type: DataTypes.TEXT,
       allowNull: false,
       validate: {
         notEmpty: true,
-        len:[100, 500]
+        len:[1, 500]
       }
     },
     userId: {

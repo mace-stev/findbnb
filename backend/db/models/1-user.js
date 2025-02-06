@@ -1,17 +1,22 @@
-'use strict';
+"use strict";
 
-const { Model, Validator } = require('sequelize');
+const { Model, Validator } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
-    User.hasMany(models.Booking, {
-      foreignKey: "userId",
-    })
+      User.hasMany(models.Booking, {
+        foreignKey: "userId",
+      });
+      User.hasMany(models.Spot),
+        {
+          foreignKey: "ownerId",
+        };
     }
   }
 
-  User.init({
+  User.init(
+    {
       firstName: {
         type: DataTypes.STRING(30),
         allowNull: false,
@@ -19,11 +24,10 @@ module.exports = (sequelize, DataTypes) => {
           len: [4, 30],
           isNotEmail(value) {
             if (Validator.isEmail(value)) {
-              throw new Error('Cannot be an email.');
+              throw new Error("Cannot be an email.");
             }
           },
         },
-
       },
       lastName: {
         type: DataTypes.STRING(30),
@@ -32,13 +36,12 @@ module.exports = (sequelize, DataTypes) => {
           len: [4, 30],
           isNotEmail(value) {
             if (Validator.isEmail(value)) {
-              throw new Error('Cannot be an email.');
+              throw new Error("Cannot be an email.");
             }
           },
         },
-
       },
-       username: {
+      username: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
@@ -46,7 +49,7 @@ module.exports = (sequelize, DataTypes) => {
           len: [4, 30],
           isNotEmail(value) {
             if (Validator.isEmail(value)) {
-              throw new Error('Cannot be an email.');
+              throw new Error("Cannot be an email.");
             }
           },
         },
@@ -70,10 +73,17 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'User',
+      modelName: "User",
       defaultScope: {
         attributes: {
-          exclude: ['firstName','lastName','hashedPassword', 'email', 'createdAt', 'updatedAt'],
+          exclude: [
+            "firstName",
+            "lastName",
+            "hashedPassword",
+            "email",
+            "createdAt",
+            "updatedAt",
+          ],
         },
       },
     }
