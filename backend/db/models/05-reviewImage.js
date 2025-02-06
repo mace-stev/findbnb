@@ -1,24 +1,30 @@
-const { Model, DataTypes } = require('sequelize');
+const { Model, DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
   class ReviewImage extends Model {
     static associate(models) {
-      ReviewImage.belongsTo(models.Review, { foreignKey: "reviewId" });
+      ReviewImage.belongsTo(models.Review, {
+        foreignKey: "reviewId",
+        onDelete: "CASCADE",
+      });
     }
   }
-  
-  ReviewImage.init({
-    url: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        isUrl: true,
+
+  ReviewImage.init(
+    {
+      url: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          isUrl: true,
+        },
       },
     },
-  }, {
-    sequelize,
-    modelName: "ReviewImage",
-  });
+    {
+      sequelize,
+      modelName: "ReviewImage",
+    }
+  );
 
   return ReviewImage;
 };
