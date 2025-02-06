@@ -25,15 +25,15 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
       allownull: false,
       references: {
-        Model: "Users",
-        Key: "id"
+        model: "Users",
+        key: "id"
       }
     },
     spotId: {
       type: DataTypes.INTEGER,
       references: {
-        Model: "Spots",
-        Key: "id"
+        model: "Spots",
+        key: "id"
       }
     },
     rating: {

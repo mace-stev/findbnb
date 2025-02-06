@@ -30,7 +30,7 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        Model: "Users",
+        model: "Users",
         key: "id",
       }
     },
@@ -38,10 +38,11 @@ module.exports = (sequelize) => {
       type:DataTypes.DATE,
       allowNull: false,
       validate: {
-        isBefore(value) {
-          if (startDate >= endDate) {
-            throw console.error("startDate must be before endDate");
-          }
+        startDateIsBefore(){
+
+        if(this.startDate.isAfter(this.endDate)){
+          throw new Error("Start date can't be after end date")
+        }
         }
       },
     },
