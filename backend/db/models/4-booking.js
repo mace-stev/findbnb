@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
             if (this.endDate <= this.startDate) {
               throw new Error("startDate must be before endDate");
             }
-              
+
           },
         },
       },
@@ -53,7 +53,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: false,
       }
-      
+
     },
     {
       sequelize,
