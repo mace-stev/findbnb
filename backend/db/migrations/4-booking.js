@@ -12,7 +12,7 @@ module.exports = {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
-        autoIcrement: true
+        autoIncrement: true
       },
       spotId: {
         type: Sequelize.INTEGER,
@@ -26,7 +26,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          Model: "Users",
+          model: "Users",
           key: "id",
         }
       },
@@ -59,7 +59,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    options.tableName = 'Bookings';
     await queryInterface.dropTable('Bookings');
   },
 };
