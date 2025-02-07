@@ -20,22 +20,16 @@ module.exports = {
         allownull: false,
         references: {
           model: "Users",
-<<<<<<<< HEAD:backend/db/migrations/3-reviews.js
-          key: "id"
-========
           Key: "id"
->>>>>>>> 1bdb4ae (renamed migration files):backend/db/migrations/05-create-reviews.js
+
         }
       },
       spotId: {
         type: Sequelize.INTEGER,
         references: {
           model: "Spots",
-<<<<<<<< HEAD:backend/db/migrations/3-reviews.js
-          key: "id"
-========
           Key: "id"
->>>>>>>> 1bdb4ae (renamed migration files):backend/db/migrations/05-create-reviews.js
+
         }
       },
       review: {
