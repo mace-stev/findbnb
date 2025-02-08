@@ -21,21 +21,23 @@ module.exports = {
         references: {
           model: "Users",
           key: "id"
-        }
+        },
+        onDelete: 'CASCADE',
       },
       spotId: {
         type: Sequelize.INTEGER,
         references: {
           model: "Spots",
           key: "id"
-        }
+        },
+        onDelete: 'CASCADE',
       },
       review: {
         type: Sequelize.TEXT,
         allowNull: false,
         validate: {
           notEmpty: true,
-          len:[100, 100]
+          len:[1, 500]
         }
       },
       stars: {
