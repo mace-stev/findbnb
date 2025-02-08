@@ -38,7 +38,7 @@ module.exports = {
           len:[100, 100]
         }
       },
-      rating: {
+      stars: {
         type: Sequelize.INTEGER,
         allownull: false,
         validate: {
