@@ -22,11 +22,6 @@ router.get("/", async (req, res, next) => {
 
   router.get("/current", async (req, res, next) => {
     try {
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> 872be6c71c9ef7432a298e230f60110272623b6d
       if (!req.user.id) {
         const userError = new Error("User must be signed in");
         userError.status = 403;
@@ -55,7 +50,7 @@ router.get("/", async (req, res, next) => {
             accumulator+=Number(element.stars)
           })
         let avgReviewRating=accumulator/oneSpotReviews.length
-       
+
       const oneSpot = await Spot.findOne({
         where: {
           id: req.params.spotId,
@@ -88,11 +83,11 @@ router.get("/", async (req, res, next) => {
             price: spotData.price,
             createdAt: spotData.createdAt,
             updatedAt: spotData.updatedAt,
-            numReviews: numReviews,       
+            numReviews: numReviews,
             avgStarRating: avgReviewRating,
-            SpotImages: spotData.SpotImages 
+            SpotImages: spotData.SpotImages
         }
-     
+
       res.json(correctSpotData);
     } catch (e) {
       next(e);
@@ -101,7 +96,7 @@ router.get("/", async (req, res, next) => {
 
 router.get("/:spotId/reviews", async (req, res, next) => {
     try {
-    
+
       const oneSpotReviews = await Review.findAll({
         where: {
           spotId: req.params.spotId,
@@ -113,14 +108,9 @@ router.get("/:spotId/reviews", async (req, res, next) => {
     }
   });
 
-<<<<<<< HEAD
-router.post( "/spots", requireAuth, async (req, res, next) => {
-    
-=======
 router.post(
     '/',
     async (req, res) => {
->>>>>>> 872be6c71c9ef7432a298e230f60110272623b6d
         try {
 
             const { address, city, state, country, lat, lng, name, description, price } = req.body;
