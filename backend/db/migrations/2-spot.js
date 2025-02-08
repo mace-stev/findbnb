@@ -1,5 +1,10 @@
 'use strict';
 /** @type {import('sequelize-cli').Migration} */
+
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA; // Use schema in production
+}
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Spots', {
@@ -9,11 +14,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      ownerId:{
-        allowNull: false,
+      ownerId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: {
-          model: "Users",
+          model: {
+            tableName: "Users",  
+            schema: options.schema  
+          },
           key: "id"
         },
         onDelete: 'CASCADE',
@@ -36,23 +44,14 @@ module.exports = {
       },
       lat: {
         type: Sequelize.DECIMAL,
-        validate: {
-          min: -90,
-          max: 90
-        }
       },
       lng: {
         type: Sequelize.DECIMAL,
-        validate: {
-          min: -180,
-          max: 180
-        }
+      
       },
       name: {
         type: Sequelize.STRING,
-        validate: {
-          max: 50
-        }
+      
       },
       description: {
         type: Sequelize.TEXT,
@@ -60,9 +59,6 @@ module.exports = {
       },
       price: {
         type: Sequelize.DECIMAL,
-        validate: {
-          min: 0
-        }
       },
       createdAt: {
         allowNull: false,
@@ -74,9 +70,10 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       }
-    });
+    }, options);
   },
   async down(queryInterface, Sequelize) {
+    options.tableName = "Spots";
     await queryInterface.dropTable('Spots');
   }
 };

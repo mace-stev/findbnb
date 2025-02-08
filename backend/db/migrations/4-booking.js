@@ -1,11 +1,9 @@
 'use strict';
-
-const { Model } = require('sequelize');
-
 /** @type {import('sequelize-cli').Migration} */
 let options = {};
-if (process.env.NODE_ENV === 'production') options.schema = process.env.SCHEMA;
-
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;  // define your schema in options object
+}
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Bookings', {
@@ -16,33 +14,31 @@ module.exports = {
       },
       spotId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
         references: {
-          model: "Spots",
-          key: "id",
+          model: {
+            tableName: "Spots", 
+            schema: options.schema  
+          },
+          key: "id"
         },
         onDelete: 'CASCADE',
-
       },
       userId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "Users",
-          key: "id",
+          model: {
+            tableName: "Users",  
+            schema: options.schema  
+          },
+          key: "id"
         },
         onDelete: 'CASCADE',
       },
       startDate: {
         type: Sequelize.DATE,
         allowNull: false,
-        validate: {
-          isBefore(value) {
-            if (startDate >= endDate) {
-              throw console.error("startDate must be before endDate");
-            }
-          }
-        },
+        
       },
       endDate: {
         type: Sequelize.DATE,
@@ -62,6 +58,7 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
+    options.tableName = "Bookings";
     await queryInterface.dropTable('Bookings');
   },
 };
