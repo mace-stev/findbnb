@@ -18,8 +18,11 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Spots',
-          key: 'id',
+          model: {
+            tableName: "Spots",  
+            schema: options.schema  
+          },
+          key: "id"
         },
         onDelete: 'CASCADE',
       },

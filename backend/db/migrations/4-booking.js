@@ -16,33 +16,31 @@ module.exports = {
       },
       spotId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
         references: {
-          model: "Spots",
-          key: "id",
+          model: {
+            tableName: "Spots", 
+            schema: options.schema  
+          },
+          key: "id"
         },
         onDelete: 'CASCADE',
-
       },
       userId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "Users",
-          key: "id",
+          model: {
+            tableName: "Users",  
+            schema: options.schema  
+          },
+          key: "id"
         },
         onDelete: 'CASCADE',
       },
       startDate: {
         type: Sequelize.DATE,
         allowNull: false,
-        validate: {
-          isBefore(value) {
-            if (startDate >= endDate) {
-              throw console.error("startDate must be before endDate");
-            }
-          }
-        },
+        
       },
       endDate: {
         type: Sequelize.DATE,

@@ -14,19 +14,18 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Reviews',
-          key: 'id',
+          model: {
+            tableName: "Reviews",  
+            schema: options.schema  
+          },
+          key: "id"
         },
         onDelete: 'CASCADE',
       },
       url: {
         type: Sequelize.STRING,
         allownull: false,
-        validate:{
-          isUrl: 
-            true,
-            notEmpty: true
-        },
+        
      },
       createdAt: {
         type: Sequelize.DATE,

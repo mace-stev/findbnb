@@ -41,19 +41,11 @@ module.exports = {
       review: {
         type: Sequelize.TEXT,
         allowNull: false,
-        validate: {
-          notEmpty: true,
-          len:[1, 500]
-        }
-      },
+        
+        },
       stars: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        validate: {
-          isInt: true,
-          min: 1,
-          max: 5,
-        }
       },
       createdAt: {
         type: Sequelize.DATE,
