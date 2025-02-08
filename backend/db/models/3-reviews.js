@@ -4,9 +4,14 @@ module.exports = (sequelize) => {
   class Review extends Model {
     static associate(models) {
       Review.belongsTo(models.User, {
-        foreignKey: 'userId' });
+        foreignKey: 'userId', 
+      onDelete: "CASCADE"
+    });
       Review.belongsTo(models.Spot, {
-         foreignKey: 'spotId' });
+         foreignKey: 'spotId',
+        onDelete: "CASCADE"
+       });
+      
       Review.hasMany(models.ReviewImage,
         { foreignKey: 'reviewId' });
     }
@@ -26,14 +31,16 @@ module.exports = (sequelize) => {
       allownull: false,
       references: {
         model: "Users",
-        key: "id"
+        key: "id",
+        onDelete: "CASCADE"
       }
     },
     spotId: {
       type: DataTypes.INTEGER,
       references: {
         model: "Spots",
-        key: "id"
+        key: "id",
+        onDelete: "CASACADE"
       }
     },
     rating: {

@@ -10,7 +10,9 @@ The models/index file will call this method automatically.*/
 static associate(models) {
   SpotImage.belongsTo(models.Spot, {
     foreignKey: "spotId",
-    onDelete: "CASCADE",});}
+    onDelete: "CASCADE"
+  })
+  }
 }
 SpotImage.init({
     spotId: {
@@ -18,13 +20,19 @@ SpotImage.init({
       allowNull: false,
       references: {
         model: "Spot",
-        key: "id",},},
+        key: "id",
+        onDelete: "CASCADE"
+      }
+    },
     url: {
       type: DataTypes.STRING,
-      allowNull: false,},
+      allowNull: false,
+    },
     preview: {
       type: DataTypes.BOOLEAN,
-      allowNull: false,},},{
+      allowNull: false,
+    },
+  },{
     sequelize,
     modelName: "SpotImage",});
 return SpotImage;
