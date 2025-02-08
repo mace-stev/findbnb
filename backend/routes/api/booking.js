@@ -1,7 +1,7 @@
 const express = require("express");
 
 const { restoreUser, requireAuth } = require("../../utils/auth");
-const { Spot, Booking } = require("../../db/models");
+const { Spot, Booking, User } = require("../../db/models");
 const { EmptyResultError } = require("sequelize");
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
@@ -51,12 +51,24 @@ const validateBookingId = (req, res, next) => {
             model: Spot
         }
       });
-      res.json(allBookings);
+      let allBookingsData = allBookings.map(booking => booking.toJSON());
+      let correctBookingsData= allBookingsData.map(booking => ({
+        id: booking.id,
+        spotId: booking.spotId,
+        Spot: booking.Spot,
+        userId: booking.userId,
+        startDate: booking.startDate,
+        endDate: booking.endDate,
+        createdAt: booking.createdAt,
+        updatedAt: booking.updatedAt,
+      }))
+      res.json(correctBookingsData);
     } catch (e) {
       next(e);
     }
   });
 
+  
 
 router.put("/:bookingId", validateBooking, validateBookingId, requireAuth, async(req, res, next) => {
     try {
