@@ -19,7 +19,7 @@ router.use('/spots', spotsRouter)
 
 router.use('/', deleteImagesRouter)
 
-router.use('/spots', reviewsRouter)
+router.use('/reviews', reviewsRouter)
 
 router.post('/test', (req, res) => {
   res.json({ requestBody: req.body });

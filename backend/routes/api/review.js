@@ -57,19 +57,78 @@
 //   });
 
 //   module.exports= router
+const express = require("express");
 
-router.delete("/:spotId", requireAuth, async (req, res, next) => {
-    const { spotId } = req.params;
-    const spot = await Spot.findByPk(spotId);
-    if (!spot) {
-        return res.status(404).json({ message: "Spot couldn't be found" });
+const { restoreUser, requireAuth, setTokenCookie } = require("../../utils/auth");
+const { Spot, SpotImage, Review } = require("../../db/models");
+const { EmptyResultError } = require("sequelize");
+const { check } = require("express-validator");
+const { handleValidationErrors } = require("../../utils/validation");
+const router = express.Router();
+
+const bcrypt = require("bcryptjs");
+
+const validateReview = [
+  check("review").notEmpty().withMessage("Review text is required"),
+  check("stars").isInt({ min: 1, max: 5 }),
+  handleValidationErrors
+];
+
+const validateReviewId = (req, res, next) => {
+  const { reviewId } = req.params;
+  if (!Number.isInteger(Number(reviewId))) {
+      return res.status(400).json({
+          message: "Validation error",
+          errors: { id: "reviewId must be a valid integer" },
+      });
+  }
+  next();
+};
+
+router.put("/:reviewId", validateReview, validateReviewId, requireAuth, async(req, res, next) => {
+  const {reviewId} = req.params;
+  const {review, stars} = req.body;
+
+  const currentReview = await Review.findByPk(reviewId);
+  if (!currentReview) {
+    return res.status(404).json({ message: "Review couldn't be found" });
+  }
+
+  if (currentReview.userId !== req.user.id) {
+    return res.status(403).json({ message: "Forbidden" });
+  }
+
+  try {
+    await currentReview.update({
+      review,
+      stars
+    });
+    return res.status(200).json({
+      id: currentReview.id,
+      spotId: Number(currentReview.spotId),
+      userId: req.user.id,
+      review: currentReview.review,
+      stars: currentReview.stars,
+      createdAt: currentReview.createdAt,
+      updatedAt: currentReview.updatedAt,
+    })
+  } catch (e) {
+    next(e);
+  }
+})
+
+router.delete("/:reviewId", requireAuth, async (req, res, next) => {
+    const { reviewId } = req.params;
+    const review = await Review.findByPk(reviewId);
+    if (!review) {
+        return res.status(404).json({ message: "Review couldn't be found" });
     }
 
-    if (spot.ownerId !== req.user.id) {
+    if (review.userId !== req.user.id) {
         return res.status(403).json({ message: "Forbidden" });
     }
     try {
-        await spot.destroy();
+        await review.destroy();
         return res.status(200).json({ message: "Successfully deleted" });
     } catch (e) {
         next(e);

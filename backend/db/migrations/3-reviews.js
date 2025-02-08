@@ -12,12 +12,12 @@ module.exports = {
       id: {
         primaryKey: true,
         type: Sequelize.INTEGER,
-        allownull: false,
+        allowNull: false,
         autoIncrement: true
       },
       userId: {
         type: Sequelize.INTEGER,
-        allownull: false,
+        allowNull: false,
         references: {
           model: "Users",
           key: "id"
@@ -32,7 +32,7 @@ module.exports = {
       },
       review: {
         type: Sequelize.TEXT,
-        allownull: false,
+        allowNull: false,
         validate: {
           notEmpty: true,
           len:[100, 100]
@@ -40,7 +40,7 @@ module.exports = {
       },
       stars: {
         type: Sequelize.INTEGER,
-        allownull: false,
+        allowNull: false,
         validate: {
           isInt: true,
           min: 1,

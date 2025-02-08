@@ -233,6 +233,7 @@ router.delete("/:spotId", requireAuth, async (req, res, next) => {
 const validateReview = [
   check("review").notEmpty().withMessage("Review text is required"),
   check("stars").isInt({ min: 1, max: 5 }),
+  handleValidationErrors
 ];
 
 router.post(
@@ -246,7 +247,7 @@ router.post(
       const { review, stars } = req.body;
 
       const spot = await Spot.findByPk(spotId);
-      if (!spotId) {
+      if (!spot) {
         return res.status(404).json({ message: "Spot couldn't be found" });
       }
 
@@ -258,6 +259,7 @@ router.post(
         spotId,
         review,
         stars,
+        userId: req.user.id,
       });
 
       return res.status(201).json({
