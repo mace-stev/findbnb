@@ -305,7 +305,7 @@ router.post(
   validateBooking,
   requireAuth,
   async (req, res, next) => {
-    try {
+   try {
       const { spotId } = req.params;
       const { startDate, endDate } = req.body;
 

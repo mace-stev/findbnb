@@ -8,8 +8,22 @@ const { handleValidationErrors } = require("../../utils/validation");
 const router = express.Router();
 
 const validateBooking = [
-  check("review").notEmpty().withMessage("Review text is required"),
-  check("stars").isInt({ min: 1, max: 5 }),
+    check('startDate')
+      // .isISO8601().withMessage('startDate must be a valid date')
+      .custom(value => {
+        if (new Date(value) < new Date()) {
+          throw new Error('startDate cannot be in the past');
+        }
+        return true;
+      }),
+    check('endDate')
+      // .isISO8601().withMessage('endDate must be a valid date')
+      .custom((value, { req }) => {
+        if (new Date(value) <= new Date(req.body.startDate)) {
+          throw new Error('endDate cannot be on or before startDate');
+        }
+        return true;
+      }),
   handleValidationErrors
 ];
 
@@ -45,35 +59,43 @@ const validateBookingId = (req, res, next) => {
 
 
 router.put("/:bookingId", validateBooking, validateBookingId, requireAuth, async(req, res, next) => {
-  const {bookingId} = req.params;
-  const {review, stars} = req.body;
+    try {
+        const { bookingId } = req.params;
+        const { startDate, endDate } = req.body;
 
-  const booking = await Booking.findByPk(bookingId);
-  if (!booking) {
-    return res.status(404).json({ message: "Review couldn't be found" });
-  }
+        const booking = await Booking.findByPk(bookingId);
+        if (!booking) {
+          return res.status(404).json({ message: "Spot couldn't be found" });
+        }
 
-  if (booking.userId !== req.user.id) {
-    return res.status(403).json({ message: "Forbidden" });
-  }
+        if (booking.userId !== req.user.id) {
+          return res.status(403).json({ message: "Forbidden" });
+        }
 
-  try {
-    await booking.update({
-      review,
-      stars
-    });
-    return res.status(200).json({
-      id: booking.id,
-      spotId: Number(booking.spotId),
-      userId: req.user.id,
-      review: booking.review,
-      stars: booking.stars,
-      createdAt: booking.createdAt,
-      updatedAt: booking.updatedAt,
-    })
-  } catch (e) {
-    next(e);
-  }
+        const spotId = booking.spotId;
+
+        const newBooking = await booking.update({
+          spotId,
+          userId: req.user.id,
+          startDate,
+          endDate
+        });
+
+        return res.status(201).json({
+          id: newBooking.id,
+          spotId: Number(newBooking.spotId),
+          userId: req.user.id,
+          startDate: newBooking.startDate,
+          endDate: newBooking.endDate,
+          createdAt: newBooking.createdAt,
+          updatedAt: newBooking.updatedAt,
+
+
+        });
+      } catch (e) {
+        next(e);
+      }
+
 })
 
 router.delete("/:bookingId", requireAuth, async (req, res, next) => {
