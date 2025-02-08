@@ -16,8 +16,8 @@ module.exports = {
         type: Sequelize.INTEGER,
         references: {
           model: {
-            tableName: "Spots", 
-            schema: options.schema  
+            tableName: "Spots",
+            schema: options.schema
           },
           key: "id"
         },
@@ -28,8 +28,8 @@ module.exports = {
         allowNull: false,
         references: {
           model: {
-            tableName: "Users",  
-            schema: options.schema  
+            tableName: "Users",
+            schema: options.schema
           },
           key: "id"
         },
@@ -38,11 +38,13 @@ module.exports = {
       startDate: {
         type: Sequelize.DATE,
         allowNull: false,
-        
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+
       },
       endDate: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
       createdAt: {
         allowNull: false,

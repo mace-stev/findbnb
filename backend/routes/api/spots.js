@@ -1,7 +1,7 @@
 const express = require("express");
 
 const { restoreUser, requireAuth, setTokenCookie } = require("../../utils/auth");
-const { Spot, SpotImage, Review } = require("../../db/models");
+const { Spot, SpotImage, Review, Booking } = require("../../db/models");
 const { EmptyResultError } = require("sequelize");
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
@@ -230,16 +230,36 @@ router.delete("/:spotId", requireAuth, async (req, res, next) => {
     }
 });
 
-const validateReview = [
+const validateReviews = [
   check("review").notEmpty().withMessage("Review text is required"),
   check("stars").isInt({ min: 1, max: 5 }),
+  handleValidationErrors
+];
+
+const validateBooking = [
+    check('startDate')
+      // .isISO8601().withMessage('startDate must be a valid date')
+      .custom(value => {
+        if (new Date(value) < new Date()) {
+          throw new Error('startDate cannot be in the past');
+        }
+        return true;
+      }),
+    check('endDate')
+      // .isISO8601().withMessage('endDate must be a valid date')
+      .custom((value, { req }) => {
+        if (new Date(value) <= new Date(req.body.startDate)) {
+          throw new Error('endDate cannot be on or before startDate');
+        }
+        return true;
+      }),
   handleValidationErrors
 ];
 
 router.post(
   "/:spotId/reviews",
   validateSpotId,
-  validateReview,
+  validateReviews,
   requireAuth,
   async (req, res, next) => {
     try {
@@ -270,6 +290,49 @@ router.post(
         stars: newReview.stars,
         createdAt: newReview.createdAt,
         updatedAt: newReview.updatedAt,
+
+
+      });
+    } catch (e) {
+      next(e);
+    }
+  }
+);
+
+router.post(
+  "/:spotId/bookings",
+  validateSpotId,
+  validateBooking,
+  requireAuth,
+  async (req, res, next) => {
+    try {
+      const { spotId } = req.params;
+      const { startDate, endDate } = req.body;
+
+      const spot = await Spot.findByPk(spotId);
+      if (!spot) {
+        return res.status(404).json({ message: "Spot couldn't be found" });
+      }
+
+      if (spot.ownerId !== req.user.id) {
+        return res.status(403).json({ message: "Forbidden" });
+      }
+
+      const newBooking = await Booking.create({
+        spotId,
+        userId: req.user.id,
+        startDate,
+        endDate
+      });
+
+      return res.status(201).json({
+        id: newBooking.id,
+        spotId: Number(newBooking.spotId),
+        userId: req.user.id,
+        startDate: newBooking.startDate,
+        endDate: newBooking.endDate,
+        createdAt: newBooking.createdAt,
+        updatedAt: newBooking.updatedAt,
 
 
       });
