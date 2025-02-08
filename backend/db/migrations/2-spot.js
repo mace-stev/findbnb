@@ -36,23 +36,14 @@ module.exports = {
       },
       lat: {
         type: Sequelize.DECIMAL,
-        validate: {
-          min: -90,
-          max: 90
-        }
       },
       lng: {
         type: Sequelize.DECIMAL,
-        validate: {
-          min: -180,
-          max: 180
-        }
+      
       },
       name: {
         type: Sequelize.STRING,
-        validate: {
-          max: 50
-        }
+      
       },
       description: {
         type: Sequelize.TEXT,
@@ -60,9 +51,6 @@ module.exports = {
       },
       price: {
         type: Sequelize.DECIMAL,
-        validate: {
-          min: 0
-        }
       },
       createdAt: {
         allowNull: false,
