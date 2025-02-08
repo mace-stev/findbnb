@@ -8,10 +8,10 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Booking, {
         foreignKey: "userId",
       });
-      User.hasMany(models.Spot),
+      User.hasMany(models.Spot,
         {
           foreignKey: "ownerId",
-        };
+        });
     }
   }
 

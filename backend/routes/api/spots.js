@@ -20,7 +20,7 @@ router.get("/", async (req, res, next) => {
   
   router.get("/current", async (req, res, next) => {
     try {
-     
+    
       if (!req.user.id) {
         const userError = new Error("User must be signed in");
         userError.status = 403;
@@ -51,11 +51,10 @@ router.get("/", async (req, res, next) => {
   });
   
 
-router.post(
-    '/spots',
-    async (req, res) => {
+router.post( "/spots", requireAuth, async (req, res, next) => {
+    
         try {
-            router.use(requireAuth)
+
             const { address, city, state, country, lat, lng, name, description, price } = req.body;
             const ownerId = req.user.id
 
