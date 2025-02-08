@@ -100,16 +100,16 @@ router.put("/:bookingId", validateBooking, validateBookingId, requireAuth, async
 
 router.delete("/:bookingId", requireAuth, async (req, res, next) => {
     const { bookingId } = req.params;
-    const review = await Review.findByPk(bookingId);
-    if (!review) {
-        return res.status(404).json({ message: "Review couldn't be found" });
+    const booking = await Booking.findByPk(bookingId);
+    if (!booking) {
+        return res.status(404).json({ message: "Booking couldn't be found" });
     }
 
-    if (review.userId !== req.user.id) {
+    if (booking.userId !== req.user.id) {
         return res.status(403).json({ message: "Forbidden" });
     }
     try {
-        await review.destroy();
+        await booking.destroy();
         return res.status(200).json({ message: "Successfully deleted" });
     } catch (e) {
         next(e);
