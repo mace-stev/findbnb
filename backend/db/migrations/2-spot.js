@@ -1,5 +1,10 @@
 'use strict';
 /** @type {import('sequelize-cli').Migration} */
+
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA; // Use schema in production
+}
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Spots', {
@@ -16,7 +21,8 @@ module.exports = {
           model: "Users",
           key: "id"
         },
-        onDelete: 'CASCADE',
+        onDelete: 'CASCADE'
+      
       },
       address: {
         type: Sequelize.STRING,
