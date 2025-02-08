@@ -1,23 +1,21 @@
 'use strict';
-
-const { Model } = require('sequelize');
-
 /** @type {import('sequelize-cli').Migration} */
 let options = {};
-if (process.env.NODE_ENV === 'production') options.schema = process.env.SCHEMA;
-
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;  // define your schema in options object
+}
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Reviews', {
       id: {
         primaryKey: true,
         type: Sequelize.INTEGER,
-        allownull: false,
+        allowNull: false,
         autoIncrement: true
       },
       userId: {
         type: Sequelize.INTEGER,
-        allownull: false,
+        allowNull: false,
         references: {
           model: "Users",
           Key: "id",
@@ -36,20 +34,12 @@ module.exports = {
       },
       review: {
         type: Sequelize.TEXT,
-        allownull: false,
-        validate: {
-          notEmpty: true,
-          len:[100, 100]
-        }
-      },
-      rating: {
+        allowNull: false,
+        
+        },
+      stars: {
         type: Sequelize.INTEGER,
-        allownull: false,
-        validate: {
-          isInt: true,
-          min: 1,
-          max: 5,
-        }
+        allowNull: false,
       },
       createdAt: {
         type: Sequelize.DATE,

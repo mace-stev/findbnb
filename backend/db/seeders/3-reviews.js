@@ -12,26 +12,34 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await Review.bulkCreate([
       {
-        spotId: 1, //"App Academy"
         userId: 1,
+        spotId: 1, //"App Academy"
         review: 'Amazing place to learn!',
-        rating: 5,
+        stars: 5,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
-        spotId: 2,// "Hotel California",
         userId: 2,
+        spotId: 2,// "Hotel California",
         review: 'Had a wonderful stay!',
-        rating: 4,
+        stars: 4,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
+        userId: 3, // Assuming a user with ID 3
         spotId: 3, //"Studio"
-        userId: 3, // Assuming a user with ID 1
         review: 'Cozy and comfortable!',
-        rating: 5,
+        stars: 5,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        userId: 2,
+        spotId: 3, //"Studio"
+        review: 'Litty',
+        stars: 5,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -39,6 +47,7 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
+    options.tableName = 'Reviews';
     await queryInterface.bulkDelete('Reviews', null, {});
   }
 };

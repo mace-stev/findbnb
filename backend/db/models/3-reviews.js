@@ -28,7 +28,7 @@ module.exports = (sequelize) => {
     },
     userId: {
       type: DataTypes.INTEGER,
-      allownull: false,
+      allowNull: false,
       references: {
         model: "Users",
         key: "id",
@@ -37,13 +37,17 @@ module.exports = (sequelize) => {
     },
     spotId: {
       type: DataTypes.INTEGER,
+<<<<<<< HEAD
       references: {
         model: "Spots",
         key: "id",
         onDelete: "CASACADE"
       }
+=======
+      allowNull: false
+>>>>>>> 872be6c71c9ef7432a298e230f60110272623b6d
     },
-    rating: {
+    stars: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {

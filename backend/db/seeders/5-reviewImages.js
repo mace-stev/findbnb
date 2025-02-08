@@ -35,8 +35,14 @@ module.exports = {
 ], options);
 },
 
+<<<<<<< HEAD
 async down(queryInterface, Sequelize) {
   return queryInterface.bulkDelete('ReviewImages', null, options);
+=======
+  async down(queryInterface, Sequelize) {
+    options.tableName = 'ReviewImages';
+    await queryInterface.bulkDelete('ReviewImages', null, {});
+>>>>>>> 872be6c71c9ef7432a298e230f60110272623b6d
   }
 };
 

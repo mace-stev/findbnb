@@ -1,11 +1,13 @@
 const express = require("express");
 
-const { restoreUser, requireAuth } = require("../../utils/auth");
-const { Spot, SpotImage } = require("../../db/models");
+const { restoreUser, requireAuth, setTokenCookie } = require("../../utils/auth");
+const { Spot, SpotImage, Review, Booking } = require("../../db/models");
 const { EmptyResultError } = require("sequelize");
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const router = express.Router();
+
+const bcrypt = require("bcryptjs");
 
 
 router.get("/", async (req, res, next) => {
@@ -16,11 +18,15 @@ router.get("/", async (req, res, next) => {
       next(e);
     }
   });
-  
-  
+
+
   router.get("/current", async (req, res, next) => {
     try {
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 872be6c71c9ef7432a298e230f60110272623b6d
       if (!req.user.id) {
         const userError = new Error("User must be signed in");
         userError.status = 403;
@@ -36,23 +42,85 @@ router.get("/", async (req, res, next) => {
       next(e);
     }
   });
-  
+
   router.get("/:spotId", async (req, res, next) => {
+    let accumulator=0
     try {
+        const oneSpotReviews = await Review.findAll({
+            where: {
+              spotId: req.params.spotId,
+            },
+          });
+          oneSpotReviews.forEach((element)=>{
+            accumulator+=Number(element.stars)
+          })
+        let avgReviewRating=accumulator/oneSpotReviews.length
+       
       const oneSpot = await Spot.findOne({
         where: {
           id: req.params.spotId,
         },
+        include:{
+            model: SpotImage
+        }
       });
-      res.json(oneSpot);
+
+      if (!oneSpot) {
+        return res.status(404).json({ message: "Spot couldn't be found" });
+    }
+
+
+      let numReviews=oneSpotReviews.length
+      let spotData = oneSpot.toJSON();
+      spotData.numReviews = numReviews;
+        spotData.avgStarRating = avgReviewRating;
+        let correctSpotData = {
+            id: spotData.id,
+            ownerId: spotData.ownerId,
+            address: spotData.address,
+            city: spotData.city,
+            state: spotData.state,
+            country: spotData.country,
+            lat: spotData.lat,
+            lng: spotData.lng,
+            name: spotData.name,
+            description: spotData.description,
+            price: spotData.price,
+            createdAt: spotData.createdAt,
+            updatedAt: spotData.updatedAt,
+            numReviews: numReviews,       
+            avgStarRating: avgReviewRating,
+            SpotImages: spotData.SpotImages 
+        }
+     
+      res.json(correctSpotData);
     } catch (e) {
       next(e);
     }
   });
-  
 
+router.get("/:spotId/reviews", async (req, res, next) => {
+    try {
+    
+      const oneSpotReviews = await Review.findAll({
+        where: {
+          spotId: req.params.spotId,
+        },
+      });
+      res.json(oneSpotReviews);
+    } catch (e) {
+      next(e);
+    }
+  });
+
+<<<<<<< HEAD
 router.post( "/spots", requireAuth, async (req, res, next) => {
     
+=======
+router.post(
+    '/',
+    async (req, res) => {
+>>>>>>> 872be6c71c9ef7432a298e230f60110272623b6d
         try {
 
             const { address, city, state, country, lat, lng, name, description, price } = req.body;
@@ -226,5 +294,118 @@ router.delete("/:spotId", requireAuth, async (req, res, next) => {
         next(e);
     }
 });
+
+const validateReviews = [
+  check("review").notEmpty().withMessage("Review text is required"),
+  check("stars").isInt({ min: 1, max: 5 }),
+  handleValidationErrors
+];
+
+const validateBooking = [
+    check('startDate')
+      // .isISO8601().withMessage('startDate must be a valid date')
+      .custom(value => {
+        if (new Date(value) < new Date()) {
+          throw new Error('startDate cannot be in the past');
+        }
+        return true;
+      }),
+    check('endDate')
+      // .isISO8601().withMessage('endDate must be a valid date')
+      .custom((value, { req }) => {
+        if (new Date(value) <= new Date(req.body.startDate)) {
+          throw new Error('endDate cannot be on or before startDate');
+        }
+        return true;
+      }),
+  handleValidationErrors
+];
+
+router.post(
+  "/:spotId/reviews",
+  validateSpotId,
+  validateReviews,
+  requireAuth,
+  async (req, res, next) => {
+    try {
+      const { spotId } = req.params;
+      const { review, stars } = req.body;
+
+      const spot = await Spot.findByPk(spotId);
+      if (!spot) {
+        return res.status(404).json({ message: "Spot couldn't be found" });
+      }
+
+      if (spot.ownerId !== req.user.id) {
+        return res.status(403).json({ message: "Forbidden" });
+      }
+
+      const newReview = await Review.create({
+        spotId,
+        review,
+        stars,
+        userId: req.user.id,
+      });
+
+      return res.status(201).json({
+        id: newReview.id,
+        spotId: Number(newReview.spotId),
+        userId: req.user.id,
+        review: newReview.review,
+        stars: newReview.stars,
+        createdAt: newReview.createdAt,
+        updatedAt: newReview.updatedAt,
+
+
+      });
+    } catch (e) {
+      next(e);
+    }
+  }
+);
+
+router.post(
+  "/:spotId/bookings",
+  validateSpotId,
+  validateBooking,
+  requireAuth,
+  async (req, res, next) => {
+   try {
+      const { spotId } = req.params;
+      const { startDate, endDate } = req.body;
+
+      const spot = await Spot.findByPk(spotId);
+      if (!spot) {
+        return res.status(404).json({ message: "Spot couldn't be found" });
+      }
+
+      if (spot.ownerId !== req.user.id) {
+        return res.status(403).json({ message: "Forbidden" });
+      }
+
+      const newBooking = await Booking.create({
+        spotId,
+        userId: req.user.id,
+        startDate,
+        endDate
+      });
+
+      return res.status(201).json({
+        id: newBooking.id,
+        spotId: Number(newBooking.spotId),
+        userId: req.user.id,
+        startDate: newBooking.startDate,
+        endDate: newBooking.endDate,
+        createdAt: newBooking.createdAt,
+        updatedAt: newBooking.updatedAt,
+
+
+      });
+    } catch (e) {
+      next(e);
+    }
+  }
+);
+
 
 module.exports = router;
