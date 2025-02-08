@@ -30,12 +30,12 @@ const validateReviewId = (req, res, next) => {
 
 
       const allUserReviews = await Review.findAll({
-        where: {
-          userId: req.user.id
+         where: {
+           userId: req.user.id
         },
         include:{
             model: Spot
-        }
+         }
       });
       res.json(allUserReviews);
     } catch (e) {

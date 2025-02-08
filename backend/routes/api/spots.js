@@ -40,18 +40,74 @@ router.get("/", async (req, res, next) => {
   });
 
   router.get("/:spotId", async (req, res, next) => {
+    let accumulator=0
     try {
+        const oneSpotReviews = await Review.findAll({
+            where: {
+              spotId: req.params.spotId,
+            },
+          });
+          oneSpotReviews.forEach((element)=>{
+            accumulator+=Number(element.stars)
+          })
+        let avgReviewRating=accumulator/oneSpotReviews.length
+       
       const oneSpot = await Spot.findOne({
         where: {
           id: req.params.spotId,
         },
+        include:{
+            model: SpotImage
+        }
       });
-      res.json(oneSpot);
+
+      if (!oneSpot) {
+        return res.status(404).json({ message: "Spot couldn't be found" });
+    }
+
+
+      let numReviews=oneSpotReviews.length
+      let spotData = oneSpot.toJSON();
+      spotData.numReviews = numReviews;
+        spotData.avgStarRating = avgReviewRating;
+        let correctSpotData = {
+            id: spotData.id,
+            ownerId: spotData.ownerId,
+            address: spotData.address,
+            city: spotData.city,
+            state: spotData.state,
+            country: spotData.country,
+            lat: spotData.lat,
+            lng: spotData.lng,
+            name: spotData.name,
+            description: spotData.description,
+            price: spotData.price,
+            createdAt: spotData.createdAt,
+            updatedAt: spotData.updatedAt,
+            numReviews: numReviews,       
+            avgStarRating: avgReviewRating,
+            SpotImages: spotData.SpotImages 
+        }
+     
+      res.json(correctSpotData);
     } catch (e) {
       next(e);
     }
   });
 
+router.get("/:spotId/reviews", async (req, res, next) => {
+    try {
+    
+      const oneSpotReviews = await Review.findAll({
+        where: {
+          spotId: req.params.spotId,
+        },
+      });
+      res.json(oneSpotReviews);
+    } catch (e) {
+      next(e);
+    }
+  });
 
 router.post(
     '/',
