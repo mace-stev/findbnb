@@ -36,7 +36,7 @@ module.exports = (sequelize) => {
         key: "id"
       }
     },
-    rating: {
+    stars: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {

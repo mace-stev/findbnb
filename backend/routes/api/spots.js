@@ -1,11 +1,13 @@
 const express = require("express");
 
-const { restoreUser, requireAuth } = require("../../utils/auth");
-const { Spot, SpotImage } = require("../../db/models");
+const { restoreUser, requireAuth, setTokenCookie } = require("../../utils/auth");
+const { Spot, SpotImage, Review } = require("../../db/models");
 const { EmptyResultError } = require("sequelize");
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const router = express.Router();
+
+const bcrypt = require("bcryptjs");
 
 
 router.get("/", async (req, res, next) => {
@@ -16,11 +18,11 @@ router.get("/", async (req, res, next) => {
       next(e);
     }
   });
-  
-  
+
+
   router.get("/current", async (req, res, next) => {
     try {
-     
+
       if (!req.user.id) {
         const userError = new Error("User must be signed in");
         userError.status = 403;
@@ -36,7 +38,7 @@ router.get("/", async (req, res, next) => {
       next(e);
     }
   });
-  
+
   router.get("/:spotId", async (req, res, next) => {
     try {
       const oneSpot = await Spot.findOne({
@@ -49,10 +51,10 @@ router.get("/", async (req, res, next) => {
       next(e);
     }
   });
-  
+
 
 router.post(
-    '/spots',
+    '/',
     async (req, res) => {
         try {
             router.use(requireAuth)
@@ -227,5 +229,55 @@ router.delete("/:spotId", requireAuth, async (req, res, next) => {
         next(e);
     }
 });
+
+const validateReview = [
+  check("review").notEmpty().withMessage("Review text is required"),
+  check("stars").isInt({ min: 1, max: 5 }),
+  handleValidationErrors
+];
+
+router.post(
+  "/:spotId/reviews",
+  validateSpotId,
+  validateReview,
+  requireAuth,
+  async (req, res, next) => {
+    try {
+      const { spotId } = req.params;
+      const { review, stars } = req.body;
+
+      const spot = await Spot.findByPk(spotId);
+      if (!spot) {
+        return res.status(404).json({ message: "Spot couldn't be found" });
+      }
+
+      if (spot.ownerId !== req.user.id) {
+        return res.status(403).json({ message: "Forbidden" });
+      }
+
+      const newReview = await Review.create({
+        spotId,
+        review,
+        stars,
+        userId: req.user.id,
+      });
+
+      return res.status(201).json({
+        id: newReview.id,
+        spotId: Number(newReview.spotId),
+        userId: req.user.id,
+        review: newReview.review,
+        stars: newReview.stars,
+        createdAt: newReview.createdAt,
+        updatedAt: newReview.updatedAt,
+
+
+      });
+    } catch (e) {
+      next(e);
+    }
+  }
+);
+
 
 module.exports = router;
