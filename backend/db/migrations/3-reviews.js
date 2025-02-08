@@ -12,35 +12,37 @@ module.exports = {
       id: {
         primaryKey: true,
         type: Sequelize.INTEGER,
-        allownull: false,
+        allowNull: false,
         autoIncrement: true
       },
       userId: {
         type: Sequelize.INTEGER,
-        allownull: false,
+        allowNull: false,
         references: {
           model: "Users",
           key: "id"
-        }
+        },
+        onDelete: 'CASCADE',
       },
       spotId: {
         type: Sequelize.INTEGER,
         references: {
           model: "Spots",
           key: "id"
-        }
+        },
+        onDelete: 'CASCADE',
       },
       review: {
         type: Sequelize.TEXT,
-        allownull: false,
+        allowNull: false,
         validate: {
           notEmpty: true,
-          len:[100, 100]
+          len:[1, 500]
         }
       },
-      rating: {
+      stars: {
         type: Sequelize.INTEGER,
-        allownull: false,
+        allowNull: false,
         validate: {
           isInt: true,
           min: 1,

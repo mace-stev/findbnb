@@ -15,7 +15,7 @@ module.exports = {
         spotId: 1, //"App Academy"
         userId: 1,
         review: 'Amazing place to learn!',
-        rating: 5,
+        stars: 5,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -23,7 +23,7 @@ module.exports = {
         spotId: 2,// "Hotel California",
         userId: 2,
         review: 'Had a wonderful stay!',
-        rating: 4,
+        stars: 4,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -31,7 +31,7 @@ module.exports = {
         spotId: 3, //"Studio"
         userId: 3, // Assuming a user with ID 1
         review: 'Cozy and comfortable!',
-        rating: 5,
+        stars: 5,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
