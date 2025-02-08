@@ -8,8 +8,10 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('ReviewImages', {
       id: {
-        type: Sequelize.INTEGER,
-        allownull: false
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER
       },
       reviewId: {
         type: Sequelize.INTEGER,
@@ -25,7 +27,7 @@ module.exports = {
       },
       url: {
         type: Sequelize.STRING,
-        allownull: false,
+        allowNull: false,
         
      },
       createdAt: {
