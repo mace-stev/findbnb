@@ -14,15 +14,17 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      ownerId:{
-        allowNull: false,
+      ownerId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: {
-          model: "Users",
+          model: {
+            tableName: "Users",  
+            schema: options.schema  
+          },
           key: "id"
         },
-        onDelete: 'CASCADE'
-      
+        onDelete: 'CASCADE',
       },
       address: {
         type: Sequelize.STRING,
