@@ -9,18 +9,84 @@ const router = express.Router();
 
 const bcrypt = require("bcryptjs");
 
+const validateSpot = [
+  check("address").notEmpty().withMessage("Address is required"),
+  check("city").notEmpty().withMessage("City is required"),
+  check("state").notEmpty().withMessage("State is required"),
+  check("country").notEmpty().withMessage("Country is required"),
+  check("lat")
+      .isFloat({ min: -90, max: 90 })
+      .withMessage("Latitude must be between -90 and 90"),
+  check("lng")
+      .isFloat({ min: -180, max: 180 })
+      .withMessage("Longitude must be between -180 and 180"),
+  check("name")
+      .isLength({ max: 50 })
+      .withMessage("Name must be 50 characters or less"),
+  check("name")
+      .notEmpty()
+      .withMessage("Name is required"),
+  check("description").notEmpty().withMessage("Description is required"),
+  check("price")
+      .isFloat({ min: 0 })
+      .withMessage("Price must be a positive number"),
+  handleValidationErrors,
+];
+
+const validateSpotId = (req, res, next) => {
+const { spotId } = req.params;
+if (!Number.isInteger(Number(spotId))) {
+    return res.status(400).json({
+        message: "Validation error",
+        errors: { id: "spotId must be a valid integer" },
+    });
+}
+next();
+};
 
 router.get("/", async (req, res, next) => {
     try {
-      const allSpots = await Spot.findAll();
-      res.json(allSpots);
+
+      const allSpots = await Spot.findAll({
+        include:
+        [
+          { model: Review },
+          { model: SpotImage }
+        ]
+
+      });
+        const formattedSpots = allSpots.map((spot) => {
+        const totalStars = spot.Reviews.reduce((sum, review) => sum + review.stars, 0);
+        const avgRating = spot.Reviews.length > 0 ? totalStars / spot.Reviews.length : null;
+        const previewImage = spot.SpotImages.find((image) => image.preview)?.url || null;
+
+        return {
+          id: spot.id,
+          ownerId: spot.ownerId,
+          address: spot.address,
+          city: spot.city,
+          state: spot.state,
+          country: spot.country,
+          lat: spot.lat,
+          lng: spot.lng,
+          name: spot.name,
+          description: spot.description,
+          price: spot.price,
+          createdAt: spot.createdAt,
+          updatedAt: spot.updatedAt,
+          avgRating,
+          previewImage,
+        };
+      });
+
+      res.json({ Spots: formattedSpots });
     } catch (e) {
       next(e);
     }
   });
 
 
-  router.get("/current", async (req, res, next) => {
+  router.get("/current", requireAuth, async (req, res, next) => {
     try {
 
       if (!req.user.id) {
@@ -39,7 +105,7 @@ router.get("/", async (req, res, next) => {
     }
   });
 
-  router.get("/:spotId", async (req, res, next) => {
+  router.get("/:spotId", validateSpotId, async (req, res, next) => {
     let accumulator=0
     try {
         const oneSpotReviews = await Review.findAll({
@@ -101,20 +167,26 @@ router.get("/", async (req, res, next) => {
     }
   });
 
-router.get("/:spotId/reviews", async (req, res, next) => {
+router.get("/:spotId/reviews", validateSpotId, async (req, res, next) => {
     try {
 
       const oneSpotReviews = await Review.findAll({
         where: {
           spotId: req.params.spotId,
         },
-        include:{
-            model: ReviewImage
-        }
+        include:
+        [
+          {model: User,
+            attributes: ['id', 'firstName', 'lastName']
+          },
+          {model: ReviewImage},
+        ]
+
+
       });
-      if(oneSpotReviews.length===0){
-        return res.status(404).json({ message: "Spot couldn't be found" });
-      }
+      // if(oneSpotReviews.length===0){
+      //   return res.status(200).json({ message: "Spot couldn't be found" });
+      // }
       res.json(oneSpotReviews);
     } catch (e) {
       next(e);
@@ -178,33 +250,10 @@ router.get("/:spotId/reviews", async (req, res, next) => {
     }
   });
 
-  const validateSpot = [
-    check("address").notEmpty().withMessage("Address is required"),
-    check("city").notEmpty().withMessage("City is required"),
-    check("state").notEmpty().withMessage("State is required"),
-    check("country").notEmpty().withMessage("Country is required"),
-    check("lat")
-        .isFloat({ min: -90, max: 90 })
-        .withMessage("Latitude must be between -90 and 90"),
-    check("lng")
-        .isFloat({ min: -180, max: 180 })
-        .withMessage("Longitude must be between -180 and 180"),
-    check("name")
-        .isLength({ max: 50 })
-        .withMessage("Name must be 50 characters or less"),
-    check("name")
-        .notEmpty()
-        .withMessage("Name is required"),
-    check("description").notEmpty().withMessage("Description is required"),
-    check("price")
-        .isFloat({ min: 0 })
-        .withMessage("Price must be a positive number"),
-    handleValidationErrors,
-];
 
 router.post(
     '/',
-    validateSpot, requireAuth, async (req, res, next) => {
+    requireAuth, validateSpot, async (req, res, next) => {
         try {
             router.use(requireAuth)
             const { address, city, state, country, lat, lng, name, description, price } = req.body;
@@ -234,7 +283,7 @@ router.post(
     }
 );
 
-router.post("/:spotId/images", requireAuth, async (req, res, next) => {
+router.post("/:spotId/images", requireAuth, validateSpotId, async (req, res, next) => {
     try {
         const { spotId } = req.params;
         const { url, preview } = req.body;
@@ -265,23 +314,13 @@ router.post("/:spotId/images", requireAuth, async (req, res, next) => {
     }
 });
 
-const validateSpotId = (req, res, next) => {
-    const { spotId } = req.params;
-    if (!Number.isInteger(Number(spotId))) {
-        return res.status(400).json({
-            message: "Validation error",
-            errors: { id: "spotId must be a valid integer" },
-        });
-    }
-    next();
-};
 
 
 router.put(
     "/:spotId",
+    requireAuth,
     validateSpot,
     validateSpotId,
-    requireAuth,
     async (req, res, next) => {
         const { spotId } = req.params;
         const {
@@ -339,7 +378,7 @@ router.put(
     }
 );
 
-router.delete("/:spotId", requireAuth, async (req, res, next) => {
+router.delete("/:spotId", requireAuth, validateSpotId, async (req, res, next) => {
     const { spotId } = req.params;
     const spot = await Spot.findByPk(spotId);
     if (!spot) {
@@ -405,10 +444,6 @@ router.post(
       const spot = await Spot.findByPk(spotId);
       if (!spot) {
         return res.status(404).json({ message: "Spot couldn't be found" });
-      }
-
-      if (spot.ownerId !== req.user.id) {
-        return res.status(403).json({ message: "Forbidden" });
       }
 
       const newReview = await Review.create({
