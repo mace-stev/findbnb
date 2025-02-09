@@ -9,7 +9,6 @@ const { User } = require('../../db/models');
 
 const router = express.Router();
 
-// Log in
 const validateLogin = [
   check('credential')
     .exists({ checkFalsy: true })
@@ -20,12 +19,13 @@ const validateLogin = [
     .withMessage('Please provide a password.'),
   handleValidationErrors
 ];
+
 router.post(
   '/', validateLogin,
   async (req, res, next) => {
     try {
       const { credential, password } = req.body;
-     
+
       const user = await User.unscoped().findOne({
         where: {
           [Op.or]: {
@@ -51,7 +51,7 @@ router.post(
         username: user.username,
       };
 
-      await setTokenCookie(res, safeUser);
+      setTokenCookie(res, safeUser);
 
       return res.json({
         user: safeUser
@@ -59,13 +59,11 @@ router.post(
 
     } catch (err) {
 
-      return next(err); // Properly handle the error
+      return next(err);
     }
   }
 );
 
-
-// Log out
 router.delete(
   '/',
   (_req, res) => {
@@ -74,7 +72,6 @@ router.delete(
   }
 );
 
-// Restore session user
 router.get(
   '/',
   (req, res) => {
