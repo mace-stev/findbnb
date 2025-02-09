@@ -195,8 +195,14 @@ router.get("/:spotId/reviews", validateSpotId, async (req, res, next) => {
 
   router.get('/:spotId/bookings', async (req, res, next) => {
     const { spotId } = req.params;
-    console.log(spotId)
+
     try {
+
+      const spot = await Spot.findByPk(spotId);
+        if (!spot) {
+            return res.status(404).json({ message: "Spot couldn't be found" });
+        }
+
       const allBookings = await Booking.findAll({
         where: {
           spotId: spotId,
@@ -212,7 +218,7 @@ router.get("/:spotId/reviews", validateSpotId, async (req, res, next) => {
           model: User
         }
       });
-      console.log(allBookingsIfOwner)
+
 
       if (allBookingsIfOwner.length===0) {
         const allBookingsDataNotOwner = allBookings.map((element) => {
@@ -224,7 +230,7 @@ router.get("/:spotId/reviews", validateSpotId, async (req, res, next) => {
         });
         return res.status(200).json(allBookingsDataNotOwner);
       }
-      console.log(allBookingsIfOwner)
+
       const allBookingDataIfOwner = allBookingsIfOwner.map((element)=>{
         return{
           User: {
@@ -245,7 +251,6 @@ router.get("/:spotId/reviews", validateSpotId, async (req, res, next) => {
 
       return res.status(200).json(allBookingDataIfOwner);
     } catch (e) {
-        console.log(e)
       next(e);
     }
   });
@@ -404,7 +409,6 @@ const validateReviews = [
 
 const validateBooking = [
     check('startDate')
-      // .isISO8601().withMessage('startDate must be a valid date')
       .custom(value => {
         if (new Date(value) < new Date()) {
           throw new Error('startDate cannot be in the past');
@@ -412,7 +416,6 @@ const validateBooking = [
         return true;
       }),
     check('endDate')
-      // .isISO8601().withMessage('endDate must be a valid date')
       .custom((value, { req }) => {
         if (new Date(value) <= new Date(req.body.startDate)) {
           throw new Error('endDate cannot be on or before startDate');
@@ -485,7 +488,7 @@ router.post(
         return res.status(404).json({ message: "Spot couldn't be found" });
       }
 
-      if (spot.ownerId !== req.user.id) {
+      if (spot.ownerId === req.user.id) {
         return res.status(403).json({ message: "Forbidden" });
       }
 
