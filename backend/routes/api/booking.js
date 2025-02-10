@@ -68,7 +68,7 @@ const validateBookingId = (req, res, next) => {
     }
   });
 
-  
+
 
 router.put("/:bookingId", validateBooking, validateBookingId, requireAuth, async(req, res, next) => {
     try {
@@ -77,7 +77,7 @@ router.put("/:bookingId", validateBooking, validateBookingId, requireAuth, async
 
         const booking = await Booking.findByPk(bookingId);
         if (!booking) {
-          return res.status(404).json({ message: "Spot couldn't be found" });
+          return res.status(404).json({ message: "Booking couldn't be found" });
         }
 
         if (booking.userId !== req.user.id) {
@@ -93,7 +93,7 @@ router.put("/:bookingId", validateBooking, validateBookingId, requireAuth, async
           endDate
         });
 
-        return res.status(201).json({
+        return res.status(200).json({
           id: newBooking.id,
           spotId: Number(newBooking.spotId),
           userId: req.user.id,
@@ -111,6 +111,7 @@ router.put("/:bookingId", validateBooking, validateBookingId, requireAuth, async
 })
 
 router.delete("/:bookingId", requireAuth, async (req, res, next) => {
+  try {
     const { bookingId } = req.params;
     const booking = await Booking.findByPk(bookingId);
     if (!booking) {
@@ -120,7 +121,6 @@ router.delete("/:bookingId", requireAuth, async (req, res, next) => {
     if (booking.userId !== req.user.id) {
         return res.status(403).json({ message: "Forbidden" });
     }
-    try {
         await booking.destroy();
         return res.status(200).json({ message: "Successfully deleted" });
     } catch (e) {
