@@ -23,7 +23,7 @@ const receiveSpots = (spots) => {
 
 
 export default function spotsReducer( state={}, action){
-    const newState={...state};
+    const newState={};
     let allIdsArray=[...state?.allIds|| []]
     let byIds={...state?.byId|| {}}
      switch(action.type){

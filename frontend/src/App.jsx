@@ -2,28 +2,55 @@ import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import Header from './components/Header';
+import Navigation from './components/Navigation';
+import LoginFormPage from './components/LoginFormPage';
 import './App.css'
-import configureStore from './store/store';
 
-const store = configureStore()
+
+function Layout() {
+  const dispatch = useDispatch();
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    dispatch(sessionActions.restoreUser()).then(() => {
+      setIsLoaded(true)
+    });
+  }, [dispatch]);
+
+  return (
+    <>
+      {isLoaded && <Outlet />}
+    </>
+  );
+}
 
 const router = createBrowserRouter([
   {
-    path: '/',
-    element: 
-      <>
-        <Header />
-        <Outlet />
-      </>,
+    element: <Layout />,
     children: [
-
       {
-       
+        path: '/',
+        element: (
+          <>
+            <Navigation />
+            <Outlet />
+          </>
+        ),
+        children: [
+          {
+            path: '/login',
+            element: <LoginFormPage />,
+          },
+          {
+            path: "/signup",
+            element: <SignupFormPage />
+          }
+        ],
       },
+    ],
+  },
+]);
 
-    ]
-  }])
 
 
 function App() {
