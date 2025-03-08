@@ -48,6 +48,7 @@ const setTokenCookie = (res, user) => {
           }
         });
       } catch (e) {
+        console.error("Error in restoreUser middleware:", err);
         res.clearCookie('token');
         return next();
       }
