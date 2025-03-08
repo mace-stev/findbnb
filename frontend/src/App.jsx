@@ -4,6 +4,9 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import Header from './components/Header';
 import './App.css'
+import configureStore from './store/store';
+
+const store = configureStore()
 
 const router = createBrowserRouter([
   {
@@ -12,7 +15,7 @@ const router = createBrowserRouter([
       <>
         <Header />
         <Outlet />
-      </>, 
+      </>,
     children: [
 
       {
