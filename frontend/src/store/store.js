@@ -1,9 +1,20 @@
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 
+
+  const placeholderReducer = (state = {}, action) => {
+    switch (action.type) {
+        case 'hello':
+            return { ...state, message: 'Hello from Redux!' };
+        default:
+            return state;
+    }
+}
+
 const rootReducer = combineReducers({
-  // ADD REDUCERS HERE
-});
+    placeholder: placeholderReducer, // Add more reducers as needed
+}) // ADD REDUCERS HERE
+ 
 
 let enhancer;
 if (import.meta.env.MODE === "production") {
