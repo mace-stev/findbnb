@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import Home from './components/Home/index'
 import * as sessionActions from './store/session';
+import SpotDetails from './components/SpotDetails';
 
 function Layout() {
   const dispatch = useDispatch();
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
        element: <Home/>,
        path: "/"
       },
+      {
+        element: <SpotDetails/>,
+        path: "/:id"
+      }
     ],
   },
 ]);
