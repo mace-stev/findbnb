@@ -20,7 +20,7 @@ function Home() {
         {Object.values(allSpots)?.map((element) => {
             if(element.previewImage){
             return <>
-                <NavLink className="spot" key={element.id} to="/:id">
+                <NavLink className="spot" key={element.id} to={`/${element.id}`}>
                     <div>
                         <img className="spotImages" src={element.previewImage} />
                     </div>

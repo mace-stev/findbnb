@@ -55,6 +55,8 @@ export default function spotsReducer( state={}, action){
       newState['allIds']=allIdsArray
       return newState;
       case SET_SPOT:
+        allIdsArray=[]
+        byIds={}
         allIdsArray.push(action.payload.id)
         byIds[action.payload.id]=action.payload
       newState['byId']=byIds
