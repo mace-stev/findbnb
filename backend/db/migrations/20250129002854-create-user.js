@@ -6,47 +6,41 @@ if (process.env.NODE_ENV === 'production') {
 }
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('SpotImages', {
+    await queryInterface.createTable('Users', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      spotId: {
-        type: Sequelize.INTEGER,
+      username: {
+        type: Sequelize.STRING(30),
         allowNull: false,
-        references: {
-          model: {
-            tableName: "Spots",  
-            schema: options.schema  
-          },
-          key: "id"
-        },
-        onDelete: 'CASCADE',
+        unique: true
       },
-      url: {
+      email: {
         type: Sequelize.STRING,
         allowNull: false,
+        unique: true
       },
-      preview: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
+      hashedPassword: {
+        type: Sequelize.STRING.BINARY,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-      },
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+      }
     }, options);
   },
   async down(queryInterface, Sequelize) {
-    options.tableName = "SpotImages";
-    await queryInterface.dropTable('SpotImages');
+    options.tableName = "Users";
+    await queryInterface.dropTable('Users');
   }
 };

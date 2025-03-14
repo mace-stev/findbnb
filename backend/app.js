@@ -4,7 +4,6 @@ const morgan = require('morgan');
 const cors = require('cors');
 const csurf = require('csurf');
 const helmet = require('helmet');
-const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const { ValidationError } = require('sequelize');
 const { environment } = require('./config');
@@ -15,7 +14,6 @@ const routes = require('./routes')
 app.use(morgan('dev'))
 app.use(cookieParser());
 app.use(express.json());
-
 
 
 if (!isProduction) {
