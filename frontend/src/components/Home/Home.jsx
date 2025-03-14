@@ -18,43 +18,43 @@ function Home() {
     console.log(spots)
     return (<section>
         {Object.values(allSpots)?.map((element) => {
-            if(element.previewImage){
+            if(element?.previewImage){
             return <>
-                <NavLink className="spot" key={element.id} to={`/${element.id}`}>
+                <NavLink className="spot" key={element?.id} to={`/${element?.id}`}>
                     <div>
-                        <img className="spotImages" src={element.previewImage} />
+                        <img className="spotImages" src={element?.previewImage} />
                     </div>
                     <div className="spotImages-caption-div" >
-                        <h3>{`${element.city}, ${element.state}`}</h3>
+                        <h3>{`${element?.city}, ${element?.state}`}</h3>
                         <div className='spotImages-rating-div'>
                         <FaStar className='rating-star'/> 
-                        <h3>{element.avgRating.toFixed(1)}</h3>
+                        <h3>{element?.avgRating?.toFixed(1)}</h3>
                         </div>
                     </div>
                     <div>
                     
                         <p>
-                            {<span className="spot-price-span">{`$${element.price}`}</span>} night
+                            {<span className="spot-price-span">{`$${element?.price}`}</span>} night
                         </p>
                     </div>
                 </NavLink>
             </>
             }
             return <>
-                <NavLink className="spot" key={element.id} to={`/${element.id}`}>
+                <NavLink className="spot" key={element?.id} to={`/${element?.id}`}>
                     <div>
                         <FaImage className='spotImages'/>
                     </div>
                     <div className="spotImages-caption-div" >
-                        <h3>{`${element.city}, ${element.state}`}</h3>
+                        <h3>{`${element?.city}, ${element?.state}`}</h3>
                         <div className='spotImages-rating-div'>
                         <FaStar className='rating-star'/> 
-                        <h3>{element.avgRating}</h3>
+                        <h3>{element?.avgRating?.toFixed(1)}</h3>
                         </div>
                     </div>
                     <div>
                         <p>
-                            {<span className="spot-price-span">{`$${element.price}`}</span>} night
+                            {<span className="spot-price-span">{`$${element?.price}`}</span>} night
                         </p>
                     </div>
                 </NavLink>
