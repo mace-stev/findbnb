@@ -1,6 +1,7 @@
 import { csrfFetch } from './csrf';
 
-export const RECEIVE_USER = 'RECEIVE_USER';
+export const SET_USER = "session/setUser";
+const REMOVE_USER = "session/removeUser"
 const initialState = { user: null };
 export const login = (user) => async (dispatch) => {
     const { credential, password } = user;
@@ -19,7 +20,7 @@ export const login = (user) => async (dispatch) => {
 
 
 export const restoreUser = () => async (dispatch) => {
-  const res = await csrfFetch("/api/sesion");
+  const res = await csrfFetch("/api/session");
   const data = await res.json();
   res.data = data;
   if (res.ok) { 
@@ -33,7 +34,7 @@ export const restoreUser = () => async (dispatch) => {
 
 const receiveUser = (user) => {
   return {
-    type: RECEIVE_USER,
+    type: SET_USER,
     user,
   };
 };
@@ -73,14 +74,16 @@ export default function userReducer( state=initialState, action){
     let allIdsArray=[...state?.allIds|| []]
     let byIds={...state?.byId|| {}}
      switch(action.type){
-      case ACTION:
-      action.payload.forEach((element)=>{
+      case SET_USER:
+      action.payload?.forEach((element)=>{
         allIdsArray.push(element.id)
         byIds[element.id]=element
        })
       newState['byId']=byIds
       newState['allIds']=allIdsArray
       return newState;
+      case REMOVE_USER:
+        return { ...state, user: null };
      
      default:
       return state
