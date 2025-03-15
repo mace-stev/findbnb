@@ -1,0 +1,11 @@
+.hidden{
+    display: none
+}
+.navbar{
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+}
+.profile-dropdown{
+    list-style: none;
+}

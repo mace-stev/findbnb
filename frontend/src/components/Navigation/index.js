@@ -1,2 +1,2 @@
-import Header from "./Header";
-export default Header
+import Navigation from "./Navigation";
+export default Navigation

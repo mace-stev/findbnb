@@ -1,6 +1,7 @@
 import { csrfFetch } from './csrf';
 
-export const RECEIVE_USER = 'RECEIVE_USER';
+export const SET_USER = "session/setUser";
+const REMOVE_USER = "session/removeUser"
 const initialState = { user: null };
 export const login = (user) => async (dispatch) => {
     const { credential, password } = user;
@@ -19,7 +20,7 @@ export const login = (user) => async (dispatch) => {
 
 
 export const restoreUser = () => async (dispatch) => {
-  const res = await csrfFetch("/api/sesion");
+  const res = await csrfFetch("/api/session");
   const data = await res.json();
   res.data = data;
   if (res.ok) { 
@@ -33,8 +34,8 @@ export const restoreUser = () => async (dispatch) => {
 
 const receiveUser = (user) => {
   return {
-    type: RECEIVE_USER,
-    user,
+    type: SET_USER,
+    payload: user,
   };
 };
 const removeUser = () => {
@@ -69,18 +70,20 @@ export const signup = (user) => async (dispatch) => {
 
 
 export default function userReducer( state=initialState, action){
-    const newState={};
-    let allIdsArray=[...state?.allIds|| []]
-    let byIds={...state?.byId|| {}}
+  const newState={};
+  let allIdsArray=[...state?.allIds|| []]
+  let byIds={...state?.byId|| {}}
      switch(action.type){
-      case ACTION:
-      action.payload.forEach((element)=>{
-        allIdsArray.push(element.id)
-        byIds[element.id]=element
-       })
+      case SET_USER:
+        allIdsArray=[]
+        byIds={}
+        allIdsArray.push(action.payload.id)
+        byIds[action.payload.id]=action.payload
       newState['byId']=byIds
       newState['allIds']=allIdsArray
       return newState;
+      case REMOVE_USER:
+        return { ...state, user: null };
      
      default:
       return state

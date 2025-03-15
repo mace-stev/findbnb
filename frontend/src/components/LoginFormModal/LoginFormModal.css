@@ -1,0 +1,88 @@
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    padding: 25px;
+    border-radius: 10px;
+    border: 2px solid #ccc;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    width: 350px;
+    margin: auto;
+  }
+  
+  h1 {
+    text-align: center;
+    font-size: 22px;
+    margin-bottom: 15px;
+    font-weight: bold;
+  }
+  
+  label {
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 8px;
+  }
+  
+  input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 3px;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+    background-color: white;
+    color: black;
+  }
+  
+  
+  
+  button {
+    width: 100%;
+    background-color: #ccc;
+    color: black;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: not-allowed;
+    transition: background 0.3s ease-in-out;
+    margin-top: 10px;
+  }
+  
+  button.enabled {
+    background-color: white;
+    color: black;
+    cursor: pointer;
+  }
+  
+  
+  
+  .demo-user {
+    display: block;
+    text-align: center;
+    color: blue;
+    font-size: 14px;
+    margin-top: 12px;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  
+  .modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  @media (max-width: 500px) {
+    form {
+      width: 90%;
+    }
+  }
+  

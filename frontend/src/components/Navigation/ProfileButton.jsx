@@ -3,8 +3,8 @@ import { useDispatch } from 'react-redux';
 import { FaUserCircle } from 'react-icons/fa';
 import * as sessionActions from '../../store/session';
 import OpenModalMenuItem from './OpenModalMenuItem';
-import LoginFormModal from '../LoginFormModal';
-import SignupFormModal from '../SignupFormModal';
+import LoginFormModal from '../LoginFormModal/index';
+import SignupFormModal from '../SignUpFormModal/index';
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -14,6 +14,7 @@ function ProfileButton({ user }) {
   const toggleMenu = (e) => {
     e.stopPropagation(); // Keep from bubbling up to document and triggering closeMenu
     setShowMenu(!showMenu);
+    console.log(user)
   };
 
   useEffect(() => {
@@ -39,18 +40,19 @@ function ProfileButton({ user }) {
   };
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
-
+  const oneUser = user?.byId ? Object.values(user.byId) : [];
+  const currUser=Object.values(oneUser)[0]
   return (
     <>
-      <button onClick={toggleMenu}>
+      <button onClick={toggleMenu} >
         <FaUserCircle />
       </button>
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
           <>
-            <li>{user.username}</li>
-            <li>{user.firstName} {user.lastName}</li>
-            <li>{user.email}</li>
+            <li>{currUser.username}</li>
+            <li>{currUser.firstName} {currUser.lastName}</li>
+            <li>{currUser.email}</li>
             <li>
               <button onClick={logout}>Log Out</button>
             </li>
