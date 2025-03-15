@@ -25,7 +25,7 @@ export const restoreUser = () => async (dispatch) => {
   res.data = data;
   if (res.ok) { 
     
-    dispatch(receiveUser(data.user));
+    dispatch(receiveUser(data?.user));
   } else {
    
     throw res;
@@ -77,8 +77,8 @@ export default function userReducer( state=initialState, action){
       case SET_USER:
         allIdsArray=[]
         byIds={}
-        allIdsArray.push(action.payload.id)
-        byIds[action.payload.id]=action.payload
+        allIdsArray.push(action?.payload?.id)
+        byIds[action?.payload?.id]=action?.payload
       newState['byId']=byIds
       newState['allIds']=allIdsArray
       return newState;
