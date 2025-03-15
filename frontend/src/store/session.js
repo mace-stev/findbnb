@@ -35,7 +35,7 @@ export const restoreUser = () => async (dispatch) => {
 const receiveUser = (user) => {
   return {
     type: SET_USER,
-    user,
+    payload: user,
   };
 };
 const removeUser = () => {
@@ -70,15 +70,15 @@ export const signup = (user) => async (dispatch) => {
 
 
 export default function userReducer( state=initialState, action){
-    const newState={};
-    let allIdsArray=[...state?.allIds|| []]
-    let byIds={...state?.byId|| {}}
+  const newState={};
+  let allIdsArray=[...state?.allIds|| []]
+  let byIds={...state?.byId|| {}}
      switch(action.type){
       case SET_USER:
-      action.payload?.forEach((element)=>{
-        allIdsArray.push(element.id)
-        byIds[element.id]=element
-       })
+        allIdsArray=[]
+        byIds={}
+        allIdsArray.push(action.payload.id)
+        byIds[action.payload.id]=action.payload
       newState['byId']=byIds
       newState['allIds']=allIdsArray
       return newState;

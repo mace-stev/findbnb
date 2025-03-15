@@ -6,3 +6,6 @@
     display: flex;
     justify-content: space-between;
 }
+.profile-dropdown{
+    list-style: none;
+}

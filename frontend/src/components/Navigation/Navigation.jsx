@@ -7,8 +7,7 @@ import './Navigation.css';
 import { FaAirbnb } from 'react-icons/fa';
 
 function Navigation() {
-  const sessionUser = useSelector(state => state.session.user);
-
+  const sessionUser = useSelector(state => state.session);
   return (
     <ul className="navbar">
       <li>
