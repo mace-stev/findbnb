@@ -83,7 +83,7 @@ export default function userReducer( state=initialState, action){
       newState['allIds']=allIdsArray
       return newState;
       case REMOVE_USER:
-        return { ...state, user: null };
+        return { initialState};
      
      default:
       return state

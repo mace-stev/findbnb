@@ -43,7 +43,7 @@ form {
   
   
   
-  button {
+  .regular-form-button {
     width: 100%;
     background-color: #ccc;
     color: black;

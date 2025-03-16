@@ -26,6 +26,12 @@ function LoginFormModal() {
         }
       });
   };
+  const handleDemoUser = ()=>{
+  
+    setCredential('FakeUser1')
+    setPassword('password2')
+    
+  }
 
   return (
     <>
@@ -52,7 +58,8 @@ function LoginFormModal() {
         {errors.credential && (
           <p>{errors.credential}</p>
         )}
-        <button type="submit">Log In</button>
+        <button className="regular-form-button"type="submit">Log In</button>
+        <a className="demo-user"onClick={(e)=>{handleDemoUser(e)}}>Demo User</a>
       </form>
     </>
   );
