@@ -5,7 +5,67 @@
     list-style: none;
     display: flex;
     justify-content: space-between;
+    height: 70px;
+    border-bottom: 2px #CCCCCC;
+    margin-bottom: 4rem;
+    padding-left: 0;
 }
 .profile-dropdown{
     list-style: none;
+    background-color: #FFFFFF;
+    width:fit-content;
+    padding: 1rem;
+    border: solid 2px;
+    z-index: 1001;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: 9%;
+    right: 5%;
+}
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0); 
+    z-index: 1000; 
+  }
+  .profile-dropdown-list-item{
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+
+
+.toggle-button{
+    width: 5rem;
+    border-radius: 15px;
+    margin-left: 1rem;
+}
+.profile-dropdown-div{
+    display:flex;
+    justify-content: right
+}
+.logo-div{
+    width: 10rem;
+    margin:auto;
+}
+.create-a-spot-list-item{
+    margin-top:auto;
+    margin-bottom: auto;
+}
+.home-link{
+    color:  #FF5A5F;
+    margin-top: auto;
+    margin-bottom: auto;
+    font-size: 1rem;
+    align-items: center;
+    display: flex;
+    gap: 3px
+}
+.logo{
+    width: 2rem;
+    height: 2rem;
+    margin-top: auto;
+    margin-bottom: auto;
 }

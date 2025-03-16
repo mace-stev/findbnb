@@ -10,14 +10,19 @@ function Navigation() {
   const sessionUser = useSelector(state => state.session);
   return (
     <ul className="navbar">
-      <li>
-        <NavLink to="/"><FaAirbnb/> FindBnb</NavLink>
+      <li className="logo-div">
+        <NavLink to="/"className="home-link"><FaAirbnb className="logo"/> FindBnb</NavLink>
       </li>
-      
-        <li>
+      <div className="profile-dropdown-div">
+        {typeof(sessionUser?.allIds?.[0]) === 'number' && (
+          <li className="create-a-spot-list-item">
+            <NavLink to="/spots/new">Create a New Spot</NavLink>
+          </li>
+        )}
+        <li className="profile-dropdown-list-item">
           <ProfileButton user={sessionUser} />
         </li>
-    
+      </div>
     </ul>
   );
 }

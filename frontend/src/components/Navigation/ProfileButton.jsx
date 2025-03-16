@@ -1,10 +1,10 @@
-import { useState, useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
-import { FaUserCircle } from 'react-icons/fa';
-import * as sessionActions from '../../store/session';
-import OpenModalMenuItem from './OpenModalMenuItem';
-import LoginFormModal from '../LoginFormModal/index';
-import SignupFormModal from '../SignUpFormModal/index';
+import { useState, useEffect, useRef } from "react";
+import { useDispatch } from "react-redux";
+import { FaUserCircle } from "react-icons/fa";
+import * as sessionActions from "../../store/session";
+import OpenModalMenuItem from "./OpenModalMenuItem";
+import LoginFormModal from "../LoginFormModal/index";
+import SignupFormModal from "../SignUpFormModal/index";
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -12,9 +12,8 @@ function ProfileButton({ user }) {
   const ulRef = useRef();
 
   const toggleMenu = (e) => {
-    e.stopPropagation(); // Keep from bubbling up to document and triggering closeMenu
-    setShowMenu(!showMenu);
-    console.log(user)
+    e.stopPropagation(); // Prevents bubbling up
+    setShowMenu((prev) => !prev);
   };
 
   useEffect(() => {
@@ -26,7 +25,7 @@ function ProfileButton({ user }) {
       }
     };
 
-    document.addEventListener('click', closeMenu);
+    document.addEventListener("click", closeMenu);
 
     return () => document.removeEventListener("click", closeMenu);
   }, [showMenu]);
@@ -41,37 +40,45 @@ function ProfileButton({ user }) {
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
   const oneUser = user?.byId ? Object.values(user?.byId) : [];
-  const currUser=Object.values(oneUser)[0]
+  const currUser = Object.values(oneUser)[0];
+
   return (
     <>
-      <button onClick={toggleMenu} >
+      <button onClick={toggleMenu} className="toggle-button">
         <FaUserCircle />
       </button>
-      <ul className={ulClassName} ref={ulRef}>
-        {user ? (
-          <>
-            <li>{currUser?.username}</li>
-            <li>{currUser?.firstName} {currUser?.lastName}</li>
-            <li>{currUser?.email}</li>
-            <li>
-              <button onClick={logout}>Log Out</button>
-            </li>
-          </>
-        ) : (
-          <>
-            <OpenModalMenuItem
-              itemText="Log In"
-              onItemClick={closeMenu}
-              modalComponent={<LoginFormModal />}
-            />
-            <OpenModalMenuItem
-              itemText="Sign Up"
-              onItemClick={closeMenu}
-              modalComponent={<SignupFormModal />}
-            />
-          </>
-        )}
-      </ul>
+
+      
+      {showMenu && <div className="menu-overlay" onClick={closeMenu}></div>}
+
+      
+      {showMenu && (
+        <ul className={ulClassName} ref={ulRef}>
+          {typeof user?.allIds?.[0] === "number" ? (
+            <>
+              <li>{currUser?.username}</li>
+              <li>{currUser?.firstName} {currUser?.lastName}</li>
+              <li>{currUser?.email}</li>
+              <li>
+                <button onClick={logout}>Log Out</button>
+              </li>
+            </>
+          ) : (
+            <>
+              <OpenModalMenuItem
+                itemText="Log In"
+                onItemClick={closeMenu}
+                modalComponent={<LoginFormModal />}
+              />
+              <OpenModalMenuItem
+                itemText="Sign Up"
+                onItemClick={closeMenu}
+                modalComponent={<SignupFormModal />}
+              />
+            </>
+          )}
+        </ul>
+      )}
     </>
   );
 }
