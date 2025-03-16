@@ -1,11 +1,14 @@
 
+import outdoorImage from '../../images/outdoors.jpg';
+
+
 
 const LandingPage = () => {
-    console.log("LandingPage component loaded");
+console.log("hello world");
+
     return (
         <div>
             <div className="navbar">
-                <div className="logo">Logo</div>
                 <div className="links">
                     <a href="/">Link1</a>
                     <a href="/">Link2</a>
@@ -14,8 +17,8 @@ const LandingPage = () => {
                 </div>
             </div>
             <div className="header">ELEVATED STAY TREETOP CABINS</div>
-            <div className="image-container">
-                <img src="path/to/image.jpg" alt="Description" />
+            <div className="image">
+                <img src={outdoorImage} alt="Blissful Outdoors" />
             </div>
             <div className="textbox">
                 <p>Our Selene Interiors stand as an unparalled emblem if our service to our clients.

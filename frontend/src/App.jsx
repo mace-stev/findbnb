@@ -7,6 +7,11 @@ import Navigation from './components/Navigation';
 import * as sessionActions from './store/session';
 import LandingPage from './components/LandingPage';
 import './index.css';
+import LoginFormModal from './components/LoginFormModal';
+import Spots from './components/Spots/Spots';
+
+
+
 function Layout() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -31,8 +36,22 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <LandingPage/>,
+        element: <LandingPage />,
+      },
+
+      {
+        path: '/Spots',
+        element: < Spots/>,
+      },
+
+
+      {
+        path: '/login',
+        element: <LoginFormModal />
       }
+
+
+
     ]
   }
 ]);
