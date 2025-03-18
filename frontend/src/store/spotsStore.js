@@ -1,6 +1,7 @@
 
 export const SET_SPOTS = 'spots/setSpots';
 export const SET_SPOT = 'spots/setSpot';
+import { csrfFetch } from './csrf';
 export const fetchSpots = () => async (dispatch) => {
   const res = await fetch(`api/spots`); 
   const data = await res.json();
@@ -38,7 +39,39 @@ export const fetchSpot = (id) => async(dispatch)=>{
     throw res;
   }
 }
-
+export const addSpot = (spot) => async (dispatch) => {
+    const { address, city, state, country, lat, lng, name, description, price } = spot;
+    const response = await csrfFetch("/api/spots", {
+      method: "POST",
+      body: JSON.stringify({
+        address,
+        city,
+        state,
+        country,
+        lat,
+        lng,
+        name,
+        description,
+        price
+      })
+    });
+    const data = await response.json();
+    dispatch(receiveSpot(data));
+    return data;
+  };
+  export const addSpotImage = (spot) => async (dispatch) => {
+    const { spotId, url, preview } = spot;
+    const response = await csrfFetch(`/api/${spotId}/images`, {
+      method: "POST",
+      body: JSON.stringify({
+        url,
+        preview
+      })
+    });
+    const data = await response.json();
+    dispatch(receiveSpot(data));
+    return response;
+  };
 
 
 export default function spotsReducer( state={}, action){
