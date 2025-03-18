@@ -9,7 +9,7 @@ import LandingPage from './components/LandingPage';
 import './index.css';
 import LoginFormModal from './components/LoginFormModal';
 import Spots from './components/Spots/Spots';
-
+import SpotDetails from './components/SpotDetails/SpotDetails';
 
 
 function Layout() {
@@ -42,6 +42,11 @@ const router = createBrowserRouter([
       {
         path: '/Spots',
         element: < Spots/>,
+
+      },
+      {
+         path: '/spots/:id',
+          element: <SpotDetails />,
       },
 
 

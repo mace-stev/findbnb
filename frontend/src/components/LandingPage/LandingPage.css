@@ -44,5 +44,21 @@ body {
     display: block;
     text-align: center; 
     margin-top: 2rem; 
-    color: white; 
+    color: rgb(222, 92, 17); 
+}
+.call-to-action {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: hsl(37, 62%, 55%); 
+    color: #cb6415; 
+    border: none; 
+    border-radius: 5px; 
+    text-align: center; 
+    text-decoration: none; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease;
+}
+
+.call-to-action:hover {
+    background-color: hsl(35, 100%, 35%); 
 }

@@ -22,12 +22,11 @@ function Navigation({ isLoaded }) {
       <li>
         <NavLink to="/">Home</NavLink>
         <ul className="navbar__links">
-       <NavLink className='navLink' to="/" >Home</NavLink> 
-        <NavLink className='navLink' to="/booking">Booking</NavLink>
-        <NavLink className='navLink'to="/spotDetails">SpotDetails</NavLink>
-        <NavLink className='navLink'to="/spotListings">SpotListings</NavLink>
+       <NavLink className='navLink' to="/" >Spots</NavLink> 
+        <NavLink className='navLink' to="/booking">SpotDetails</NavLink>
+        <NavLink className='navLink'to="/spotDetails">Reviews</NavLink>
+        <NavLink className='navLink'to="/spotListings">SignUp</NavLink>
         <NavLink className='navLink'to="/reviews">Reviews</NavLink>
-        <NavLink className='navLink' to="/imageCarousel">ImageCarousel</NavLink>
       
       </ul>
 

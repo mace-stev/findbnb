@@ -1,58 +1,49 @@
 
-import React from 'react';
-import { useEffect, useState} from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getAllSpots } from '../../store/spots';
-
-
-
-
+import { getAllSpotsThunk } from '../../store/spots';
+import './Spots.css'; 
 
 const Spots = () => {
-  // hook function that runs on component mount
-const dispatch = useDispatch();
+    const dispatch = useDispatch();
+    const allSpots = useSelector(state => state.spots.allSpots);
+    const [isLoaded, setIsLoaded] = useState(false);
 
-const [spots, setSpots] = useState([]);
-const [isLoaded, setIsLoaded] = useState(false);
+    useEffect(() => {
+        const getSpots = async () => {
+            await dispatch(getAllSpotsThunk());
+            setIsLoaded(true);
+        };
+        getSpots();
+    }, [dispatch]); // Only run once on mount
 
+    if (!isLoaded) {
+        return <div>Loading...</div>; // Optional loading state
+    }
 
-useEffect(() => {
-  //step 2: fetch the data from the backend server component mount
-  
-// dispatch(getAllSpots());
-const getData = async () => {
-dispatch(getAllSpots());
-
-
-
-  setIsLoaded(true);
-  //setSpots(data);
-  console.log(data);
-}
-
-
-if (!isLoaded) {
-getData();
-}
-
-}, [spots, isLoaded]);
-
-  return (
-    <div className='spots_container'>
-      {spots.map((spot, idx) => (
-        <div key={`${idx} -${spot.id}`}>
-          <Link to={`/spots/${spot.id}`}></Link>
-          <img src={spot.imageUrl} alt={spot.name} />
-          <h2>{spot.name}</h2>
-          <p>{spot.description}</p>
-          <p>{`$${spot.price}`}</p>
+    return (
+        <div className='spots_container'>
+            {allSpots.map((spot, idx) => (
+                <div key={`${idx}-${spot.id}`} className='spot_tile'>
+                    <Link to={`/spots/${spot.id}`} className='spot_link'>
+                        <img src={spot.imagesUrl} alt={spot.name} className='spot_image' />
+                        <div className='spot_details'>
+                            <div className='spot_location'>
+                                {spot.city}, {spot.state}
+                            </div>
+                            <div className='spot_rating' title={spot.name}>
+                                {spot.reviews.length === 0 ? 'New' : spot.avgRating.toFixed(1)} ★
+                            </div>
+                            <div className='spot_price'>
+                                ${spot.price} night
+                            </div>
+                        </div>
+                    </Link>
+                </div>
+            ))}
         </div>
-      ))}
-      
-    </div>
-  );
-}
-
+    );
+};
 
 export default Spots;

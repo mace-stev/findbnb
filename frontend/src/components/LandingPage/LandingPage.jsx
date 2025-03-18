@@ -1,19 +1,16 @@
-
+import { Link } from 'react-router-dom';
 import outdoorImage from '../../images/outdoors.jpg';
 
 
-
 const LandingPage = () => {
-console.log("hello world");
-
     return (
         <div>
             <div className="navbar">
                 <div className="links">
-                    <a href="/">Link1</a>
-                    <a href="/">Link2</a>
-                    <a href="/">Link3</a>
-                    <a href="/">Link4</a>
+                    <Link to="/">Link1</Link>
+                    <Link to="/">Link2</Link>
+                    <Link to="/">Link3</Link>
+                    <Link to="/">Link4</Link>
                 </div>
             </div>
             <div className="header">ELEVATED STAY TREETOP CABINS</div>
@@ -21,11 +18,11 @@ console.log("hello world");
                 <img src={outdoorImage} alt="Blissful Outdoors" />
             </div>
             <div className="textbox">
-                <p>Our Selene Interiors stand as an unparalled emblem if our service to our clients.
-                    It is our belief that your time away from home is met by our excellent service!</p>
+                <p>Our Selene Interiors stand as an unparalleled emblem of our service to our clients. It is our belief that your time away from home is met by our excellent service!</p>
             </div>
-            <a className="call-to-action" href="/">View All Spots</a>
+            <Link className="call-to-action button" to="/spots">View All Spots</Link>
         </div>
     );
 };
+
 export default LandingPage;
