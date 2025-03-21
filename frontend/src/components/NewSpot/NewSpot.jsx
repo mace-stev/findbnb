@@ -41,7 +41,7 @@ function NewSpot() {
             console.log(error);
         }
         try{
-        console.log(response)
+        if(response.id){
         const imageArray = [image1, image2, image3, image4, image5];
         const oneSpot = response.id
         let preview = false;
@@ -57,7 +57,7 @@ function NewSpot() {
 
                 }))
             }
-        })
+        })}
         }
         catch(error){
             console.log(error)
@@ -96,7 +96,7 @@ function NewSpot() {
                 <label>
 
                     Mention the best features of your space, any special amentities like
-                    fast wif or parking, and what you love about the neighborhood.
+                    fast wifi or parking, and what you love about the neighborhood.
                     <textarea name="description" required minLength="30" value={description} onChange={(e) => setDescription(e.target.value)} />
                 </label>
                 <h2>Create a title for your spot</h2>

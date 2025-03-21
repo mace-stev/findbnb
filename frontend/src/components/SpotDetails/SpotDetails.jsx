@@ -1,6 +1,6 @@
 import './SpotDetails.css'
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { FaImage } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux'
@@ -8,8 +8,10 @@ import { fetchSpot } from '../../store/spotsStore'
 import { fetchSpotReviews } from '../../store/reviewsStore';
 import {FaStar} from "react-icons/fa"
 function SpotDetails(){
-    const spot = useSelector(state => state.spots)
-    const reviews = useSelector(state => state.reviews)
+    const initialSpot = useSelector(state => state.spots)
+    const initialReviews = useSelector(state => state.reviews)
+    const [spot, setSpot] = useState();
+    const [reviews, setReviews] = useState();
     const dispatch = useDispatch()
     const {id} = useParams()
     useEffect(() => {
@@ -17,6 +19,11 @@ function SpotDetails(){
         dispatch(fetchSpotReviews(id))
        
     }, [dispatch, id])
+
+    useEffect(()=>{
+        setSpot(initialSpot)
+        setReviews(initialReviews)
+    }, [initialSpot, initialReviews])
     const oneSpot = spot?.byId ? Object.values(spot.byId) : [];
     const spotReviews = reviews?.byId ? Object.values(reviews.byId): [];
     console.log(spotReviews)

@@ -23,11 +23,11 @@ export const fetchSpotReviews = (id) => async (dispatch) => {
   }
 };
 
-
-export default function reviewsReducer( state={}, action){
+const initialState = {allIds: [], byId: {}};
+export default function reviewsReducer(  state=initialState, action){
     const newState={};
-    let allIdsArray=[...state?.allIds|| []]
-    let byIds={...state?.byId|| {}}
+    let allIdsArray=[]
+    let byIds={}
      switch(action.type){
       case SET_REVIEWS:
       action.payload?.forEach((element)=>{

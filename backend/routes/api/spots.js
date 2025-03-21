@@ -124,12 +124,41 @@ router.get("/current", requireAuth, async (req, res, next) => {
       userError.status = 403;
       throw userError;
     }
-    const oneSpot = await Spot.findAll({
+    const allSpots = await Spot.findAll({
       where: {
-        ownerId: req.user.id,
+        ownerId: req.user.id
       },
+      include: [{ model: Review }, { model: SpotImage }]
     });
-    res.json(oneSpot);
+    const formattedSpots = allSpots.map((spot) => {
+      const totalStars = spot.Reviews.reduce(
+        (sum, review) => sum + review.stars,
+        0
+      );
+      const avgRating =
+        spot.Reviews.length > 0 ? totalStars / spot.Reviews.length : null;
+      const previewImage =
+        spot.SpotImages.find((image) => image.preview)?.url || null;
+
+      return {
+        id: spot.id,
+        ownerId: spot.ownerId,
+        address: spot.address,
+        city: spot.city,
+        state: spot.state,
+        country: spot.country,
+        lat: spot.lat,
+        lng: spot.lng,
+        name: spot.name,
+        description: spot.description,
+        price: spot.price,
+        createdAt: spot.createdAt,
+        updatedAt: spot.updatedAt,
+        avgRating,
+        previewImage,
+      };
+    });
+    return res.json({ Spots: formattedSpots })
   } catch (e) {
     next(e);
   }
