@@ -1,6 +1,7 @@
 
 export const SET_SPOTS = 'spots/setSpots';
 export const SET_SPOT = 'spots/setSpot';
+export const REMOVE_SPOT = 'spots/removeSpot';
 import { csrfFetch } from './csrf';
 export const fetchSpots = () => async (dispatch) => {
   const res = await fetch(`/api/spots`);
@@ -59,6 +60,19 @@ export const addSpot = (spot) => async (dispatch) => {
   dispatch(receiveSpot(data));
   return data;
 };
+export const deleteSpot = (spotId) => async (dispatch) =>{
+  const response = await csrfFetch(`/api/spots/${spotId}/`, {
+    method: "DELETE",
+ 
+  });
+  const data = await response.json();
+  dispatch(removeSpot(spotId))
+  return data;
+}
+export const removeSpot = (spotId) => ({
+  type: REMOVE_SPOT,
+  spotId
+});
 export const addSpotImage = (spot) => async (dispatch) => {
   const { spotId, url, preview } = spot;
   const response = await csrfFetch(`/api/${spotId}/images/`, {
@@ -107,6 +121,13 @@ export default function spotsReducer(state = initialState, action) {
       byIds[action.payload.id] = action.payload
       newState['byId'] = byIds
       newState['allIds'] = allIdsArray
+      return newState;
+    case REMOVE_SPOT:
+      allIdsArray=state.allIds.filter((element)=>element!==action.spotId)
+      byIds={...state.byId}
+      newState['byId'] = byIds
+      newState['allIds'] = allIdsArray
+      delete newState.byId[action.spotId]
       return newState;
     default:
       return state
