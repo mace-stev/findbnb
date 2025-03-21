@@ -45,6 +45,7 @@ function ManageSpots() {
                             </p>
                         </div>
                         </NavLink>
+                        <NavLink to={`/spots/${element.id}/edit`}>Update</NavLink>
                         <OpenModalMenuItem
                             itemText="Delete"
                             modalComponent={<DeleteSpot spotId={element.id} />}
@@ -69,6 +70,7 @@ function ManageSpots() {
                         </p>
                     </div>
                     </NavLink>
+                    <NavLink to={`/spots/${element.id}/edit`}>Update</NavLink>
                     <OpenModalMenuItem
                         itemText="Delete"
                         onItemClick={()=>{

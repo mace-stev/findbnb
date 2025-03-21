@@ -357,7 +357,7 @@ router.post("/", requireAuth, validateSpot, async (req, res, next) => {
 });
 
 router.post(
-  "/:spotId/images",
+  "/:spotId/images/",
   requireAuth,
   validateSpotId,
   async (req, res, next) => {

@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './NewSpot.css';
-import { useDispatch} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addSpot, addSpotImage } from '../../store/spotsStore';
 function NewSpot() {
     const [country, setCountry] = useState("");
@@ -17,13 +17,35 @@ function NewSpot() {
     const [image3, setImage3] = useState("");
     const [image4, setImage4] = useState("");
     const [image5, setImage5] = useState("");
-   
+    const spot = useSelector(state => state.spots)
+
+    useEffect(()=>{
+        if (spot && spot.allIds[0]) {
+            console.log(spot)
+            const imageArray = [image1, image2, image3, image4, image5];
+            let preview = false;
+            imageArray.forEach((element) => {
+                if (element !== "" && element) {
+                    if (element === image1) {
+                        preview = true;
+                    }
+                    dispatch(addSpotImage({
+                        spotId: spot.allIds[0],
+                        url: element,
+                        preview: preview
+
+                    }))
+                }
+            })
+        }
+    }, [spot])
+    
     const dispatch = useDispatch();
     async function onSubmitHandler(e) {
         e.preventDefault()
-        let response
+        
         try {
-            response= await dispatch(
+            dispatch(
                 addSpot({
                     country: country,
                     address: street,
@@ -36,38 +58,17 @@ function NewSpot() {
                     price: price
                 })
             );
-            console.log(response)
-        } catch (error) {
-            console.log(error);
+           
         }
-        try{
-        if(response.id){
-        const imageArray = [image1, image2, image3, image4, image5];
-        const oneSpot = response.id
-        let preview = false;
-        imageArray.forEach((element)=>{
-            if(element!=="" && element){
-                if(element===image1){
-                    preview=true;
-                }
-                dispatch(addSpotImage({
-                    spotId: oneSpot,
-                    url: element,
-                    preview: preview
-
-                }))
-            }
-        })}
-        }
-        catch(error){
+        catch (error) {
             console.log(error)
         }
     }
-    
+
     return (
         <>
             <h1>Create a new Spot</h1>
-            <form onSubmit={(e)=>{ onSubmitHandler(e)}}>
+            <form onSubmit={(e) => { onSubmitHandler(e) }}>
                 <label>
                     Country
                     <input type="text" name="country" placeholder="Country" value={country} required onChange={(e) => setCountry(e.target.value)} />
