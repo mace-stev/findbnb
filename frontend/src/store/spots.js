@@ -12,10 +12,14 @@ const GET_SPOT_DETAILS = "view spot details/GET_SPOT_DETAILS";
 //----step  6 : package the data into an action object
 
 // Action creator for getting all spots
-export const getAllSpots = (spots) => ({
+const getAllSpots = (spots) => {
+ return{
   type: GET_ALL_SPOTS,
-  payload: spots,
-});
+  payload: spots
+ } 
+};
+
+
 
 // Action creator for creating a new spot
 export const createSpot = (newSpot) => ({
@@ -130,7 +134,7 @@ export const getSpotDetailsThunk = (id) => async (dispatch) => {
     const response = await csrfFetch(`/api/spots/${id}`);
     console.log("step 5)");
 
-    if (response.ok) {
+    if (!response.ok) {
       const spotDetails = await response.json();
       console.log("spotDetails");
       dispatch(getSpotDetails(spotDetails));
@@ -144,100 +148,67 @@ export const getSpotDetailsThunk = (id) => async (dispatch) => {
 }
 
 
-
-//<------>
-
-//export const getSpotDetailsThunk = (id) => async (dispatch) => {
-//const spotDetails = await csrfFetch(`api/spots/${id}`); 
-
-// Fetching the spot details from API backend server
-//dispatch(getSpotDetails(spotDetails));
-//};
-
 //<-------REDUCERS----->
 
+// Step 1: Normalizing our state
 const initialState = {
   allSpots: [],
-  byId: {}
+  byId: {},
+  currentSpot: null // To hold the details of the currently selected spot
 };
 
+
+// Step 3: Reducer
 const spotsReducer = (state = initialState, action) => {
   switch (action.type) {
-
-    case "GET_ALL_SPOTS": {
-      const newState = { ...state }; // Clone the current state
-      const spots = action.payload; // Get the spots from the action payload
-
-      // REPLACE ALL SPOTS
-      newState.allSpots = spots; // Update the allSpots array
-
-      // REPLACE BY ID
-      const newById = { ...newState.byId }; // Clone the current byId object
-
-      // Go through all the spots and normalize them
-      for (let spot of spots) {
-        newById[spot.id] = spot; // Normalize the structure
+    case GET_ALL_SPOTS: {
+      const spotsArr = action.payload.Spots;
+      const newState = { ...state }; // Make a copy of state
+      newState.allSpots = spotsArr;
+      newState.byId = {};
+      
+      for (let spot of spotsArr) {
+        newState.byId[spot.id] = spot; // Normalize the spots by ID
       }
-
-      newState.byId = newById; // Update the byId object
-
-      // Last line of every case - return the newState
       return newState;
     }
 
-    case "CREATE_SPOT": {
+    case CREATE_SPOT: {
+      const newSpot = action.payload.spot;
       const newState = { ...state };
-      const newSpot = action.payload; // New spot data from the action
-
-      // Add the new spot to the allSpots array
-      newState.allSpots.push(newSpot);
-
-      // Add the new spot to the byId object
-      newState.byId[newSpot.id] = newSpot;
+      newState.allSpots = [...newState.allSpots, newSpot]; // Add new spot to the array
+      newState.byId[newSpot.id] = newSpot; // Add new spot to byId
       return newState;
     }
 
-    case "UPDATE_SPOT": {
+    case UPDATE_SPOT: {
+      const updatedSpot = action.payload.spot;
       const newState = { ...state };
-      const updatedSpot = action.payload; // Updated spot data from the action
-
-      // Update the allSpots array
       newState.allSpots = newState.allSpots.map(spot =>
-        spot.id === updatedSpot.id ? updatedSpot : spot
+        spot.id === updatedSpot.id ? updatedSpot : spot // Update the specific spot
       );
-
-      // Update the byId object
-      newState.byId[updatedSpot.id] = updatedSpot;
+      newState.byId[updatedSpot.id] = updatedSpot; // Update the spot in byId
       return newState;
     }
 
-    case "DELETE_SPOT": {
+    case DELETE_SPOT: {
+      const spotIdToDelete = action.payload.id;
       const newState = { ...state };
-      const spotId = action.payload; // ID of the spot to delete
-
-      // Remove the spot from the allSpots array
-      newState.allSpots = newState.allSpots.filter(spot => spot.id !== spotId);
-
-      // Remove the spot from the byId object
-      const newById = { ...newState.byId };
-      delete newById[spotId];
-      newState.byId = newById;
+      newState.allSpots = newState.allSpots.filter(spot => spot.id !== spotIdToDelete); // Remove the spot
+      delete newState.byId[spotIdToDelete]; // Remove from byId
       return newState;
     }
 
-
-    case "GET_SPOT_DETAILS": {
+    case GET_SPOT_DETAILS: {
+      const spotIdToGet = action.payload.id;
       const newState = { ...state };
-      const spotDetails = action.payload;
-      newState.byId[spotDetails.id] = spotDetails;
+      newState.currentSpot = newState.byId[spotIdToGet] || null; // Fetch the spot details by ID
       return newState;
     }
-
 
     default:
       return state;
   }
 };
-
 
 export default spotsReducer;

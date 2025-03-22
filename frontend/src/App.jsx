@@ -10,6 +10,8 @@ import './index.css';
 import LoginFormModal from './components/LoginFormModal';
 import Spots from './components/Spots/Spots';
 import SpotDetails from './components/SpotDetails/SpotDetails';
+import CreateSpot from './components/CreateSpot/CreateSpot';
+
 
 
 function Layout() {
@@ -45,8 +47,13 @@ const router = createBrowserRouter([
 
       },
       {
-         path: '/spots/:id',
-          element: <SpotDetails />,
+         path: '/spotsdetails',
+          element: <SpotDetails/>,
+      },
+
+      {
+         path: '/createspot',
+         element:<CreateSpot/>
       },
 
 
