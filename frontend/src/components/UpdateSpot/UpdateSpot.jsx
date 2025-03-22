@@ -1,28 +1,109 @@
 import './UpdateSpot.css'
-import { useState } from 'react';
-import { useDispatch} from 'react-redux';
-function UpdateSpot(){
-        const [country, setCountry] = useState("");
-        const [street, setStreet] = useState("");
-        const [city, setCity] = useState("");
-        const [state, setState] = useState("");
-        const [latitude, setLatitude] = useState("0");
-        const [longitude, setLongitude] = useState("0");
-        const [description, setDescription] = useState("");
-        const [title, setTitle] = useState("");
-        const [price, setPrice] = useState("");
-        const [image1, setImage1] = useState("");
-        const [image2, setImage2] = useState("");
-        const [image3, setImage3] = useState("");
-        const [image4, setImage4] = useState("");
-        const [image5, setImage5] = useState("");
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { editSpot, fetchSpot, editSpotImages, addSpotImage } from '../../store/spotsStore';
+function UpdateSpot() {
+    const [country, setCountry] = useState("");
+    const [street, setStreet] = useState("");
+    const [city, setCity] = useState("");
+    const [state, setState] = useState("");
+    const [latitude, setLatitude] = useState("");
+    const [longitude, setLongitude] = useState("");
+    const [description, setDescription] = useState("");
+    const [title, setTitle] = useState("");
+    const [price, setPrice] = useState("");
+    const [image1, setImage1] = useState("");
+    const [image2, setImage2] = useState("");
+    const [image3, setImage3] = useState("");
+    const [image4, setImage4] = useState("");
+    const [image5, setImage5] = useState("");
+    const { id } = useParams()
+    const dispatch = useDispatch()
+    const spot = useSelector(state => state.spots)
+    const spotData = spot.byId[id];
+    useEffect(() => {
+        dispatch(fetchSpot(id))
+    }, [dispatch])
+
+    useEffect(() => {
+        if (spotData) {
+            setCountry(spotData.country || '');
+            setStreet(spotData.address || '');
+            setCity(spotData.city || '');
+            setState(spotData.state || '');
+            setLatitude(spotData.lat?.toString() || '');
+            setLongitude(spotData.lng?.toString() || '');
+            setDescription(spotData.description || '');
+            setTitle(spotData.name || '');
+            setPrice(spotData.price || '');
 
 
-    return(<>
+            const images = spotData.SpotImages || [];
+            setImage1(images[0]?.url || '');
+            setImage2(images[1]?.url || '');
+            setImage3(images[2]?.url || '');
+            setImage4(images[3]?.url || '');
+            setImage5(images[4]?.url || '');
+        }
+    }, [spotData]);
+
+
+    function onSubmitHandler(e) {
+        e.preventDefault()
+        dispatch(editSpot({
+            id: id,
+            country: country,
+            address: street,
+            city: city,
+            state: state,
+            lat: latitude,
+            lng: longitude,
+            description: description,
+            name: title,
+            price: price
+        }))
+        const imageArray = [image1, image2, image3, image4, image5];
+        
+        let foundPreview = false;
+
+        imageArray.forEach((element, index) => {
+          const isValid = element && element.trim().length > 0;
+          const preview = !foundPreview && isValid;
+      
+          if (preview) foundPreview = true;
+          console.log(`image ${index + 1}:`, {
+            url: element,
+            preview,
+            imageId: spotData.SpotImages[index]?.id,
+          });
+      
+            if (isValid  && element && spotData.SpotImages[index]?.id!==undefined) {
+                
+                dispatch(editSpotImages({
+                    id: spotData.SpotImages[index]?.id,
+                    spotId: id,
+                    url: element,
+                    preview: preview
+
+                }))
+            }
+            else if(isValid && spotData.SpotImages[index]?.id===undefined){
+                dispatch(addSpotImage({
+                    spotId: id,
+                    url: element,
+                    preview: preview
+                }))
+            }
+        })
+
+    }
+
+    return (<>
         <h1>Update your Spot</h1>
         <h2>Where's your place located?</h2>
         <h3>Guests will only get your exact address once they booked a reservation.</h3>
-        <form onSubmit={(e)=>{ onSubmitHandler(e)}}>
+        <form onSubmit={(e) => { onSubmitHandler(e) }}>
             <label>
                 Country
                 <input type="text" name="country" placeholder="Country" value={country} required onChange={(e) => setCountry(e.target.value)} />

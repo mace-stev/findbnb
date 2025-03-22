@@ -1,6 +1,11 @@
 body{
     background: #FFFFFF;
     color: #000000;
+  
+}
+.body-section{
+    background: #FFFFFF;
+    color: #000000;
     padding-left: 3rem;
     padding-right: 3rem;
     width: 100%;

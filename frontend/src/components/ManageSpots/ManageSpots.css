@@ -9,16 +9,44 @@
 .spot-price-span{
     font-weight: bold;
 }
-section{
+
+.body-section{
+    background: #FFFFFF;
+    color: #000000;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    width: 100%;
+    box-sizing: border-box;
+    height: fit-content;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    width: 100%
+
 }
 .spot{
     width: 25%;
     box-sizing:border-box;
-    padding: 1rem
+    padding: 1rem;
+    color: black
+}
+.spot-button{
+    padding: .25rem;
+    border-radius: 0;
+    border: black solid 2px;
+    box-shadow: 5px 5px 5px black;
+    margin-right: 1rem;
+}
+.manage-spots-title{
+    text-align: left;
+    margin-top: 0;
+    font-size: 1.5rem
+}
+.header-container{
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+.spots-navlink{
+    color:#FFFFFF
 }
 .spotImages-rating-div{
     display: flex;
@@ -37,3 +65,21 @@ section{
     background: rgba(0, 0, 0, 0); 
     z-index: 1000; 
   }
+  .manage-spots-container{
+    display: flex;
+  }
+  .button-container{
+    display: flex;
+    justify-content: left;
+  }
+li{
+    list-style: none;
+}
+.spot-container{
+    width: 25%;
+    box-sizing:border-box;
+    padding: 1rem
+}
+.delete-button{
+    margin-left: 1rem;
+}

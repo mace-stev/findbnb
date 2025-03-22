@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import './NewSpot.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { addSpot, addSpotImage } from '../../store/spotsStore';
+import { useDispatch} from 'react-redux';
+import { addSpot, addSpotImage, fetchSpot } from '../../store/spotsStore';
 function NewSpot() {
     const [country, setCountry] = useState("");
     const [street, setStreet] = useState("");
@@ -17,20 +17,16 @@ function NewSpot() {
     const [image3, setImage3] = useState("");
     const [image4, setImage4] = useState("");
     const [image5, setImage5] = useState("");
-    const spot = useSelector(state => state.spots)
+    const [spot, setSpot] = useState()
 
     useEffect(()=>{
-        if (spot && spot.allIds[0]) {
-            console.log(spot)
+        if (spot!==undefined) {
             const imageArray = [image1, image2, image3, image4, image5];
-            let preview = false;
-            imageArray.forEach((element) => {
+            imageArray.forEach((element, index) => {
+                const preview = (index === 0 && element.length > 0);
                 if (element !== "" && element) {
-                    if (element === image1) {
-                        preview = true;
-                    }
                     dispatch(addSpotImage({
-                        spotId: spot.allIds[0],
+                        spotId: spot,
                         url: element,
                         preview: preview
 
@@ -45,7 +41,7 @@ function NewSpot() {
         e.preventDefault()
         
         try {
-            dispatch(
+           const response= await dispatch(
                 addSpot({
                     country: country,
                     address: street,
@@ -58,7 +54,8 @@ function NewSpot() {
                     price: price
                 })
             );
-           
+           const id = await dispatch(fetchSpot(response.id))
+           setSpot(id)
         }
         catch (error) {
             console.log(error)

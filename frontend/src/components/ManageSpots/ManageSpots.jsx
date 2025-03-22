@@ -7,6 +7,7 @@ import { NavLink } from 'react-router-dom';
 import { useEffect } from 'react';
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import DeleteSpot from '../DeleteSpot';
+import React from 'react';
 
 
 
@@ -16,18 +17,20 @@ function ManageSpots() {
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(getUsersSpots())
-        console.log("hi")
 
     }, [dispatch])
 
     const allSpots = spots?.byId ? Object.values(spots.byId) : [];
-    return (<>
-        <h1>Manage Your Spots</h1>
-        <NavLink to="/spots/new">Create a New Spot</NavLink>
+    return (<section className="body-section">
+        <div className="header-container">
+        <h1 className="manage-spots-title">Manage Your Spots</h1>
+        <button className="spot-button"><NavLink className="spots-navlink" to="/spots/new">Create a New Spot</NavLink></button>
+        </div>
+        <div className="manage-spots-container">
         {Object.values(allSpots)?.map((element) => {
             if (element?.previewImage) {
-                return <>
-                    <NavLink className="spot" key={element?.id} to={`/${element?.id}`}>
+                return < div className="spot-container" key={element.id}>
+                    <NavLink className="spot"  to={`/${element?.id}`}>
                         <div>
                             <img className="spotImages" src={element?.previewImage} />
                         </div>
@@ -45,14 +48,24 @@ function ManageSpots() {
                             </p>
                         </div>
                         </NavLink>
-                        <NavLink to={`/spots/${element.id}/edit`}>Update</NavLink>
+                        <div className="button-container">
+                        <button className="spot-button">
+                        <NavLink to={`/spots/${element.id}/edit`} className="spots-navlink">Update</NavLink>
+                        </button>
+                        <button className="spot-button">
                         <OpenModalMenuItem
-                            itemText="Delete"
-                            modalComponent={<DeleteSpot spotId={element.id} />}
-                        />
-                </>
+                        itemText="Delete"
+                        onItemClick={()=>{
+                            return(<div className="menu-overlay"></div>)
+                        }}
+                        modalComponent={<DeleteSpot spotId={element.id} />}
+                        
+                    />
+                    </button>
+                        </div>
+               </div>
             }
-            return <>
+            return  < div className="spot-container"key={element.id}>
                 <NavLink className="spot" key={element?.id} to={`/${element?.id}`}>
                     <div>
                         <FaImage className='spotImages' />
@@ -70,17 +83,25 @@ function ManageSpots() {
                         </p>
                     </div>
                     </NavLink>
-                    <NavLink to={`/spots/${element.id}/edit`}>Update</NavLink>
-                    <OpenModalMenuItem
+                    <div className="button-container">
+                        <button className="spot-button">
+                        <NavLink to={`/spots/${element.id}/edit`} className="spots-navlink">Update</NavLink>
+                        </button>
+                        <button className="spot-button">
+                        <OpenModalMenuItem
                         itemText="Delete"
                         onItemClick={()=>{
                             return(<div className="menu-overlay"></div>)
                         }}
                         modalComponent={<DeleteSpot spotId={element.id} />}
+                       
                     />
-            </>
+                    </button>
+                        </div>
+             </div>
 
         })}
-    </>)
+        </div>
+    </section>)
 }
 export default ManageSpots;

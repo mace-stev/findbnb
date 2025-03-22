@@ -35,6 +35,7 @@ export const fetchSpot = (id) => async (dispatch) => {
   if (res.ok) {
 
     dispatch(receiveSpot(data));
+    return id
   } else {
 
     throw res;
@@ -60,6 +61,45 @@ export const addSpot = (spot) => async (dispatch) => {
   dispatch(receiveSpot(data));
   return data;
 };
+
+export const editSpot = (spot) => async (dispatch) => {
+  const { id, address, city, state, country, lat, lng, name, description, price } = spot;
+  const response = await csrfFetch(`/api/spots/${id}/`, {
+    method: "PUT",
+    body: JSON.stringify({
+      address,
+      city,
+      state,
+      country,
+      lat,
+      lng,
+      name,
+      description,
+      price
+    })
+  });
+  const data = await response.json();
+  dispatch(receiveSpot(data));
+  return data;
+};
+
+
+export const editSpotImages = (spotImage) => async (dispatch) => {
+  const { id, spotId, url, preview} = spotImage;
+  const response = await csrfFetch(`/api/spots/${spotId}/images/${id}`, {
+    method: "PUT",
+    body: JSON.stringify({
+      url,
+      preview
+    })
+  });
+  const data = await response.json();
+  dispatch(receiveSpots(data.Spots));
+  return data;
+};
+
+
+
 export const deleteSpot = (spotId) => async (dispatch) =>{
   const response = await csrfFetch(`/api/spots/${spotId}/`, {
     method: "DELETE",
@@ -75,16 +115,22 @@ export const removeSpot = (spotId) => ({
 });
 export const addSpotImage = (spot) => async (dispatch) => {
   const { spotId, url, preview } = spot;
-  const response = await csrfFetch(`/api/${spotId}/images/`, {
+  const res = await fetch(`/api/spots/${spotId}`);
+  const data = await res.json();
+  res.data = data;
+  if (res.ok) {
+  const response = await csrfFetch(`/api/spots/${spotId}/images/`, {
     method: "POST",
     body: JSON.stringify({
       url,
       preview
     })
-  });
-  const data = await response.json();
-  dispatch(receiveSpot(data));
+  })
+  dispatch(receiveSpots(data.Spots));
   return response;
+};
+  
+  
 };
 export const getUsersSpots = () => async (dispatch) => {
   const res = await csrfFetch(`/api/spots/current/`);

@@ -365,7 +365,7 @@ router.post(
       const { spotId } = req.params;
       const { url, preview } = req.body;
 
-      const spot = await Spot.findByPk(spotId);
+      const spot = await Spot.findByPk(spotId)
       if (!spot) {
         return res.status(404).json({ message: "Spot couldn't be found" });
       }
@@ -384,6 +384,43 @@ router.post(
         id: newImage.id,
         url: newImage.url,
         preview: newImage.preview,
+      });
+    } catch (e) {
+      next(e);
+    }
+  }
+);
+router.put(
+  "/:spotId/images/:imageId",
+  requireAuth,
+  validateSpotId,
+  async (req, res, next) => {
+    const { spotId, imageId } = req.params;
+    const {
+      url,
+      preview
+    } = req.body;
+
+    const spotImage = await SpotImage.findByPk(imageId);
+    if (!spotImage) {
+      return res.status(404).json({ message: "SpotImage couldn't be found" });
+    }
+
+
+
+    try {
+      const updatedFields = {};
+
+      if (url !== undefined) updatedFields.url = url;
+      if (preview !== undefined) updatedFields.preview = preview;
+
+      await spotImage.update(updatedFields);
+      console.log(preview)
+
+      return res.status(200).json({
+        id: spotImage.id,
+        url: spotImage.url,
+        preview: spotImage.preview,
       });
     } catch (e) {
       next(e);

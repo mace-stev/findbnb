@@ -6,9 +6,9 @@
     display: flex;
     justify-content: space-between;
     height: 70px;
-    border-bottom: 2px #CCCCCC;
-    margin-bottom: 4rem;
-    padding-left: 0;
+    border-bottom: 2px #CCCCCC solid;
+    margin-bottom: 1rem;
+    padding: .5rem
 }
 .profile-dropdown{
     list-style: none;
@@ -58,14 +58,17 @@
     color:  #FF5A5F;
     margin-top: auto;
     margin-bottom: auto;
-    font-size: 1rem;
+    font-size: 2rem;
     align-items: center;
     display: flex;
     gap: 3px
 }
 .logo{
-    width: 2rem;
-    height: 2rem;
+    width: 3rem;
+    height: 3rem;
     margin-top: auto;
     margin-bottom: auto;
+}
+.create-a-spot{
+    color: #00525E
 }
