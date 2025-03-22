@@ -69,8 +69,9 @@ function Navigation({ isLoaded }) {
                 </div>
             )}
             <div className="navbar_logo">
-                <NavLink to="/">
+                <NavLink to="/" style={{ display: 'flex', alignItems: 'center' }}>
                     <img src={logo} alt="logo" className="logo" />
+                    <span className="treeTopBnB">treeTopBnB</span>
                 </NavLink>
             </div>
             <div className="navbar_right">

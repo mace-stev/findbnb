@@ -8,3 +8,4 @@ const NavIcon = ({ Icon, onClick, className }) => {
     );
 };
 export default NavIcon;
+

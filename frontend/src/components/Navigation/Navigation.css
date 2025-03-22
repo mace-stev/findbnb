@@ -1,53 +1,68 @@
-/* Navigation.css */
 .navbarContainer {
     display: flex;
-    flex-direction: column; /* Stack top navigation above logo and profile button */
-    align-items: stretch; /* Full width */
-    padding: 10px 20px; /* Padding for the navbar */
+    flex-direction: column; 
+    align-items: stretch; 
+    padding: 10px 20px;
+   
 }
 
 .navbar_top {
-    display: flex; /* Align items in a row */
-    justify-content: flex-start; /* Align items to start */
-    background-color: #f8f8f8; /* Background color for the top nav */
-    padding: 10px; /* Padding for the top nav */
+    display: flex; 
+    justify-content: flex-start; 
+    background-color: #ddc18c; 
+    padding: 10px; 
+    border-radius:5px;
 }
 
 .navigation_controls {
-    display: flex; /* Align icons and search input in a row */
-    flex-grow: 1; /* Allow controls to take available space */
-    align-items: center; /* Center items vertically */
+    display: flex; 
+    flex-grow: 1; 
+    align-items: center; 
 }
 
 .nav_icon {
-    margin-right: 15px; /* Space between icons */
-    cursor: pointer; /* Pointer cursor for icons */
+    margin-right: 15px; 
+    cursor: pointer; 
 }
 
 .search_input {
-    flex-grow: 1; /* Allow the search input to stretch */
-    margin-right: 10px; /* Space between search input and search icon */
-    padding: 5px; /* Padding for the search input */
-    border: 1px solid #ccc; /* Border style */
-    border-radius: 4px; /* Rounded corners */
+    background-color:#ddc8a1;  
+    flex-grow: 1; 
+    margin-right: 10px; 
+    padding: 5px; 
+    border: 2px solid #3d4435; 
+    border-radius: 10px; 
 }
 
 .search_icon {
-    cursor: pointer; /* Pointer cursor for search icon */
+    cursor: pointer; 
 }
 
 .navbar_logo {
     display: flex;
-    justify-content: flex-start; /* Align logo to the left */
+    align-items: center;
+    font-weight: bold; 
 }
 
+.navbar_logo a{
+    text-decoration: none;
+    color: #7e6e61;
+}
 .logo {
-    width: 100px; /* Adjust logo size */
-    height: auto; /* Maintain aspect ratio */
+    width: 100px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.site_name {
+    font-size: 24px;
+    font-weight: bold; 
+    color: #c76a22; 
+    text-decoration: none;
 }
 
 .navbar_right {
-    margin-left: auto; /* Push profile button to the right */
+    margin-left: auto;
     display: flex;
-    align-items: center; /* Center align the profile button */
+    align-items: center; 
 }
