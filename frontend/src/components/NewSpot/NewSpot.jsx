@@ -63,9 +63,10 @@ function NewSpot() {
     }
 
     return (
-        <>
-            <h1>Create a new Spot</h1>
-            <form onSubmit={(e) => { onSubmitHandler(e) }}>
+        <section className="new-edit-spot-container">
+            
+            <form onSubmit={(e) => { onSubmitHandler(e) }} className="new-edit-spot-form">
+            <h1 className="form-title">Create a new Spot</h1>
                 <label>
                     Country
                     <input type="text" name="country" placeholder="Country" value={country} required onChange={(e) => setCountry(e.target.value)} />
@@ -129,7 +130,7 @@ function NewSpot() {
                 </label>
                 <button type="submit">Create Spot</button>
             </form>
-        </>
+        </section>
     );
 }
 

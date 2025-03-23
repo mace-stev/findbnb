@@ -99,11 +99,11 @@ function UpdateSpot() {
 
     }
 
-    return (<>
-        <h1>Update your Spot</h1>
+    return ( <section className="new-edit-spot-container">
+        <h1 className="form-title">Update your Spot</h1>
         <h2>Where's your place located?</h2>
         <h3>Guests will only get your exact address once they booked a reservation.</h3>
-        <form onSubmit={(e) => { onSubmitHandler(e) }}>
+        <form onSubmit={(e) => { onSubmitHandler(e) }} className="new-edit-spot-form">
             <label>
                 Country
                 <input type="text" name="country" placeholder="Country" value={country} required onChange={(e) => setCountry(e.target.value)} />
@@ -167,6 +167,6 @@ function UpdateSpot() {
             </label>
             <button type="submit">Create Spot</button>
         </form>
-    </>)
+    </section>)
 }
 export default UpdateSpot;

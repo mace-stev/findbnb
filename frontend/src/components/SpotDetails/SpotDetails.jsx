@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchSpot } from '../../store/spotsStore'
 import { fetchSpotReviews } from '../../store/reviewsStore';
 import {FaStar} from "react-icons/fa"
+import React from 'react';
 function SpotDetails(){
     const initialSpot = useSelector(state => state.spots)
     const initialReviews = useSelector(state => state.reviews)
@@ -26,10 +27,10 @@ function SpotDetails(){
     }, [initialSpot, initialReviews])
     const oneSpot = spot?.byId ? Object.values(spot.byId) : [];
     const spotReviews = reviews?.byId ? Object.values(reviews.byId): [];
-    console.log(spotReviews)
-    return(<>
+    
+    return(<section className="body-section">
     {Object.values(oneSpot)?.map((element)=>{
-        return(<>
+        return(<React.Fragment  key={element.id}>
         <h1 className="spot-details-title">{element?.name}</h1>
         <h3>{`${element?.city}, ${element?.state}, ${element?.country}`}</h3>
         <div className='spot-details-image-container'>
@@ -73,18 +74,18 @@ function SpotDetails(){
                 <h3 className="reviews-num">{`${element?.numReviews} reviews`}</h3>
             </div>
 
-        </>)
+        </React.Fragment>)
     })}
     {Object.values(spotReviews).map((element)=>{
-        return(<>
+        return(<React.Fragment  key={element.id}>
         <div className="review">
             <h4>{element?.User?.firstName}</h4>
             <h4 className="review-date">{`${element?.createdAt.slice(5,7)} ${element.createdAt.slice(0, 4)}`}</h4>
             <p>{element?.review}</p>
         </div>
         
-        </>)
+        </React.Fragment>)
     })}
-    </>)
+    </section>)
 }
 export default SpotDetails;

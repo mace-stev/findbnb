@@ -37,3 +37,16 @@
 .reviews-num{
     margin-left: 1rem;
 }
+.body-section{
+    background: #FFFFFF;
+    color: #000000;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    width: 100%;
+    box-sizing: border-box;
+    height: fit-content;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+}

@@ -1,5 +1,29 @@
+.form-title{
+    text-align: left;
+    font-size: 1.5rem;
+    width: 100%
+    
+}
 h2{
     text-align: left;
-    width: 350px
-
+    width: 100%
+}
+.new-edit-spot-container{
+    padding: 1rem 10rem;
+    display: block;
+    width: fit-content;
+    margin: auto;
+}
+input{
+    background-color: #E8F0FE;
+}
+.new-edit-spot-form{
+    border: none;
+    box-shadow:none;
+    text-align: left
+}
+textarea{
+    height: 10rem;
+    background-color: #E8F0FE;
+    width: 100%
 }
