@@ -33,6 +33,7 @@
 .spot-details-review-header-container{
     display:flex;
     justify-content: left;
+    margin-bottom: 1rem
 }
 .reviews-num{
     margin-left: 1rem;
@@ -66,3 +67,8 @@
     background: rgba(0, 0, 0, 0); 
     z-index: 1000; 
   }
+  .star{
+    height: 2rem;
+    width: 2rem;
+    margin-right: .5rem;
+}

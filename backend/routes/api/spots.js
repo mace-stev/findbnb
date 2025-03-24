@@ -544,6 +544,11 @@ router.post(
     try {
       const { spotId } = req.params;
       const { review, stars } = req.body;
+      const user= await User.findOne({
+        where: {
+          id: req.user.id
+        }
+      })
       const userReview = await Review.findOne({
         where: {
           userId: req.user.id,
@@ -570,6 +575,7 @@ router.post(
 
       return res.status(201).json({
         id: newReview.id,
+        firstName: user.firstName,
         spotId: Number(newReview.spotId),
         userId: req.user.id,
         review: newReview.review,
