@@ -25,7 +25,7 @@ function Home() {
                         <img className="spotImages" src={`${element?.previewImage}`} />
                     </div>
                     <div className="spotImages-caption-div" >
-                        <h3>{`${element?.city}, ${element?.state}`}</h3>
+                        <h3 className="spotImages-h3">{`${element?.city}, ${element?.state}`}</h3>
                         <div className='spotImages-rating-div'>
                         <FaStar className='rating-star'/> 
                         <h3>{element?.avgRating?.toFixed(1)}</h3>

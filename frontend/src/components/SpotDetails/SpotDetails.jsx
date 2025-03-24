@@ -10,6 +10,7 @@ import { FaStar } from "react-icons/fa"
 import NewReview from '../NewReview';
 import React from 'react';
 import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
+import DeleteReview from '../DeleteReview';
 function SpotDetails() {
     const initialSpot = useSelector(state => state.spots)
     const initialReviews = useSelector(state => state.reviews)
@@ -76,19 +77,23 @@ function SpotDetails() {
                     <p>{`${element?.description}`}</p>
                 </div>
                 <div className="spot-details-review-header-container">
-                    <FaStar />
+                    <FaStar className='star'/>
                     <h3>{element?.avgStarRating?.toFixed(1)}</h3>
-                    <h3 className="reviews-num">{`${element?.numReviews} reviews`}</h3>
+                    <h3 className="reviews-num">{`${spotReviews.length} reviews`}</h3>
                 </div>
                 {currUser && currUser.id !== element.ownerId && (
                     <button className="spot-button"><OpenModalMenuItem
-                    itemText="Post Your Review"
-                    onItemClick={()=>{
-                        return(<div className="menu-overlay"></div>)
-                    }}
-                    modalComponent={<NewReview spotId={element.id} userId={currUser.id} />}
-                    
-                /></button>
+                        itemText="Post Your Review"
+                        onItemClick={() => {
+                            return (<div className="menu-overlay"></div>)
+                        }}
+                        onModalClose={() => {
+                            dispatch(fetchSpot(id))
+                            dispatch(fetchSpotReviews(id))
+                        }}
+                        modalComponent={<NewReview spotId={element.id} userId={currUser.id} />}
+
+                    /></button>
                 )}
 
             </React.Fragment>)
@@ -96,10 +101,25 @@ function SpotDetails() {
         {Object.values(spotReviews).map((element) => {
             return (<React.Fragment key={element.id}>
                 <div className="review">
-                    <h4>{element?.User?.firstName}</h4>
+                    <h4>{element?.User?.firstName || element?.firstName}</h4>
                     <h4 className="review-date">{`${element?.createdAt.slice(5, 7)} ${element.createdAt.slice(0, 4)}`}</h4>
                     <p>{element?.review}</p>
                 </div>
+                {currUser && currUser.id === element.userId && (
+                    <button className="spot-button">
+                    <OpenModalMenuItem
+                    itemText="Delete"
+                    onItemClick={()=>{
+                        return(<div className="menu-overlay"></div>)
+                    }}
+                    modalComponent={<DeleteReview reviewId={element.id} spotId={id}/>}
+                    onModalClose={() => {
+                        dispatch(fetchSpot(id))
+                        dispatch(fetchSpotReviews(id))
+                    }}
+                />
+                </button>
+                )}
 
             </React.Fragment>)
         })}
