@@ -5,7 +5,7 @@ import { useState } from "react";
 import { addReview } from "../../store/reviewsStore";
 import { useDispatch } from "react-redux";
 import { fetchSpotReviews } from "../../store/reviewsStore";
-function NewReview({spotId, userId}) {
+function NewReview({spotId}) {
     const { closeModal } = useModal();
     const [star1, setStar1] =useState({ fill: 'white', stroke: 'black', strokeWidth: 75 })
     const [star2, setStar2] =useState({ fill: 'white', stroke: 'black', strokeWidth: 75 })

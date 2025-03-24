@@ -24,7 +24,7 @@ function UpdateSpot() {
     const spotData = spot.byId[id];
     useEffect(() => {
         dispatch(fetchSpot(id))
-    }, [dispatch])
+    }, [dispatch, id])
 
     useEffect(() => {
         if (spotData) {
