@@ -16,7 +16,7 @@ function Navigation() {
       <div className="profile-dropdown-div">
         {typeof(sessionUser?.allIds?.[0]) === 'number' && (
           <li className="create-a-spot-list-item">
-            <NavLink to="/spots/new">Create a New Spot</NavLink>
+            <NavLink to="/spots/new" className="create-a-spot">Create a New Spot</NavLink>
           </li>
         )}
         <li className="profile-dropdown-list-item">

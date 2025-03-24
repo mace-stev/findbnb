@@ -23,7 +23,7 @@
     height: 20rem
 }
 #root{
-    height: 150rem;
+    height: fit-content;
     width: 100%
 }
 .spot-details-title{
@@ -37,3 +37,32 @@
 .reviews-num{
     margin-left: 1rem;
 }
+.body-section{
+    background: #FFFFFF;
+    color: #000000;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    width: 100%;
+    box-sizing: border-box;
+    height: fit-content;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+}
+.spot-button{
+    padding: .1rem .25rem;
+    border-radius: 0;
+    border: black solid 2px;
+    box-shadow: 5px 5px 5px black;
+    margin-right: 1rem;
+}
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0); 
+    z-index: 1000; 
+  }
