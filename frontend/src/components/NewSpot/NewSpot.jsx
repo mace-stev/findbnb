@@ -34,7 +34,7 @@ function NewSpot() {
                 }
             })
         }
-    }, [spot])
+    }, [spot, image1, image2, image3, image4, image5])
     
     const dispatch = useDispatch();
     async function onSubmitHandler(e) {
