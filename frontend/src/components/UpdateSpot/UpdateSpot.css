@@ -33,7 +33,8 @@ textarea{
     background-color: #E8F0FE;
     width: 100%;
     border: solid 3px black;
-    margin-top: 1rem
+    margin-top: 1rem;
+    color: black
 }
 .city-state-container{
     display: flex;

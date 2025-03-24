@@ -13,14 +13,14 @@ const receiveReviews = (reviews) => {
 
 
 export const fetchSpotReviews = (id) => async (dispatch) => {
-  const res = await fetch(`/api/spots/${id}/reviews/`); 
+  const res = await fetch(`/api/spots/${id}/reviews/`);
   const data = await res.json();
   res.data = data;
-  if (res.ok) { 
-    
+  if (res.ok) {
+
     dispatch(receiveReviews(data));
   } else {
-   
+
     throw res;
   }
 };
@@ -39,10 +39,10 @@ export const addReview = (reviewToAdd) => async (dispatch) => {
   return data;
 };
 
-export const deleteReview = (reviewId) => async (dispatch) =>{
+export const deleteReview = (reviewId) => async (dispatch) => {
   const response = await csrfFetch(`/api/reviews/${reviewId}/`, {
     method: "DELETE",
- 
+
   });
   const data = await response.json();
   dispatch(removeReview(reviewId))
@@ -54,7 +54,7 @@ export const removeReview = (reviewId) => ({
 });
 
 export const editSpotReview = (reviewToEdit) => async (dispatch) => {
-  const {  review, stars, reviewId } = reviewToEdit;
+  const { review, stars, reviewId } = reviewToEdit;
   const response = await csrfFetch(`/api/reviews/${reviewId}`, {
     method: "PUT",
     body: JSON.stringify({
@@ -73,37 +73,37 @@ const receiveReview = (review) => {
   };
 };
 
-const initialState = {allIds: [], byId: {}};
-export default function reviewsReducer(  state=initialState, action){
-    const newState={};
-    let allIdsArray=[]
-    let byIds={}
-     switch(action.type){
-      case SET_REVIEWS:
-      action.payload?.forEach((element)=>{
+const initialState = { allIds: [], byId: {} };
+export default function reviewsReducer(state = initialState, action) {
+  const newState = {};
+  let allIdsArray = [...state.allIds]
+  let byIds = { ...state.byId }
+  switch (action.type) {
+    case SET_REVIEWS:
+      action.payload?.forEach((element) => {
         allIdsArray.push(element.id)
-        byIds[element.id]=element
-       })
-      newState['byId']=byIds
-      newState['allIds']=allIdsArray
+        byIds[element.id] = element
+      })
+      newState['byId'] = byIds
+      newState['allIds'] = allIdsArray
       return newState;
-          case SET_REVIEW:
-             allIdsArray = [...state.allIds]
-             byIds = {...state.byId}
-             allIdsArray.push(action.payload.id)
-             byIds[action.payload.id] = action.payload
-             newState['byId'] = byIds
-             newState['allIds'] = allIdsArray
-             return newState;
+    case SET_REVIEW:
+      if (!allIdsArray.includes(action.payload.id)) {
+        allIdsArray.push(action.payload.id);
+      }
+      byIds[action.payload.id] = action.payload
+      newState['byId'] = byIds
+      newState['allIds'] = allIdsArray
+      return newState;
 
-      case REMOVE_REVIEW:
-            allIdsArray=state.allIds.filter((element)=>element!==action.reviewId)
-            byIds={...state.byId}
-            newState['byId'] = byIds
-            newState['allIds'] = allIdsArray
-            delete newState.byId[action.spotId]
-            return newState;
-      
-     default:
+    case REMOVE_REVIEW:
+      allIdsArray = state.allIds.filter((element) => element !== action.reviewId)
+      newState['byId'] = byIds
+      newState['allIds'] = allIdsArray
+      delete newState.byId[action.reviewId]
+      return newState;
+
+    default:
       return state
-   }}
+  }
+}
