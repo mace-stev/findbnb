@@ -1,0 +1,20 @@
+.unfilled-star{
+    fill: #FFFFFF;
+    border: solid 1px black
+}
+.rating-container{
+    display: flex;
+}
+.star-container{
+    display:flex;
+}
+.rating-input{
+    display: none;
+}
+.review-button{
+    padding: .1rem .25rem;
+    border-radius: 0;
+    border: black solid 2px;
+    box-shadow: 5px 5px 5px black;
+    margin-right: 1rem;
+}
