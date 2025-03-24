@@ -50,3 +50,19 @@
     justify-content: space-between;
 
 }
+.spot-button{
+    padding: .1rem .25rem;
+    border-radius: 0;
+    border: black solid 2px;
+    box-shadow: 5px 5px 5px black;
+    margin-right: 1rem;
+}
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0); 
+    z-index: 1000; 
+  }

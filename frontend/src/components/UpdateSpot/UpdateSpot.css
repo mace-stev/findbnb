@@ -1,12 +1,16 @@
 .form-title{
     text-align: left;
     font-size: 1.5rem;
-    width: 100%
+    width: 100%;
+    margin-top: 0;
+    margin-bottom: 0
     
 }
 h2{
     text-align: left;
-    width: 100%
+    width: 100%;
+    font-size: 1rem;
+    margin-bottom: 0
 }
 .new-edit-spot-container{
     padding: 1rem 10rem;
@@ -16,14 +20,80 @@ h2{
 }
 input{
     background-color: #E8F0FE;
+    border: solid 3px black
 }
 .new-edit-spot-form{
     border: none;
     box-shadow:none;
-    text-align: left
+    text-align: left;
+    padding-top: 0
 }
 textarea{
     height: 10rem;
     background-color: #E8F0FE;
-    width: 100%
+    width: 100%;
+    border: solid 3px black;
+    margin-top: 1rem
+}
+.city-state-container{
+    display: flex;
+}
+.city-input-label{
+    width: 60%;
+    margin-right: 1rem;
+    box-sizing: border-box;
+}
+.state-input-label{
+    width: 40%;
+}
+.latitude-longitude-div{
+    display: flex;
+    padding-bottom: .5rem;
+    border-bottom: solid 2px black
+}
+.latitude-input-label{
+    width: 50%;
+    box-sizing: border-box;
+    margin-right: .5rem
+}
+.longitude-input-label{
+    width: 50%;
+    box-sizing: border-box;
+    margin-left: .5rem
+}
+.new-edit-spot-h3{
+    white-space: normal;
+    margin-bottom: 1rem
+}
+.description-label{
+    margin-bottom: 0;
+    padding-bottom: 1.5rem;
+    border-bottom: solid 2px black
+}
+.title-h2{
+    margin-top:.5rem
+}
+.name-label{
+    margin-bottom: 0;
+    padding-bottom: 1.5rem;
+    border-bottom: solid 2px black
+}
+.price-label{
+    margin-bottom: 0;
+    padding-bottom: 1.5rem;
+    border-bottom: solid 2px black
+}
+.image-5-label{
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: solid 2px black;
+    
+}
+.form-spot-button{
+    padding: .25rem;
+    border-radius: 0;
+    border: black solid 2px;
+    box-shadow: 5px 5px 5px black;
+    margin-right: 1rem;
+    background-color:  #FF5A5F;
 }

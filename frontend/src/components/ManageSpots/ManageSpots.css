@@ -30,7 +30,7 @@
     color: black
 }
 .spot-button{
-    padding: .25rem;
+    padding: .1rem .25rem;
     border-radius: 0;
     border: black solid 2px;
     box-shadow: 5px 5px 5px black;

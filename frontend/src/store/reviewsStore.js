@@ -1,6 +1,7 @@
 
 export const SET_REVIEWS = 'spots/setReviews';
 export const REMOVE_REVIEW = 'spots/removeReview';
+export const SET_REVIEW = 'spots/setReview';
 import { csrfFetch } from './csrf';
 
 const receiveReviews = (reviews) => {
@@ -25,18 +26,16 @@ export const fetchSpotReviews = (id) => async (dispatch) => {
 };
 
 export const addReview = (reviewToAdd) => async (dispatch) => {
-  const { spotId, review, stars, userId } = reviewToAdd;
+  const { spotId, review, stars } = reviewToAdd;
   const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
     method: "POST",
     body: JSON.stringify({
-      spotId,
       review,
-      stars,
-      userId
+      stars
     })
   });
   const data = await response.json();
-  dispatch(receiveReviews(data));
+  dispatch(receiveReview(data));
   return data;
 };
 
@@ -54,7 +53,7 @@ export const removeReview = (reviewId) => ({
   reviewId
 });
 
-export const editSpot = (reviewToEdit) => async (dispatch) => {
+export const editSpotReview = (reviewToEdit) => async (dispatch) => {
   const {  review, stars, reviewId } = reviewToEdit;
   const response = await csrfFetch(`/api/reviews/${reviewId}`, {
     method: "PUT",
@@ -66,6 +65,12 @@ export const editSpot = (reviewToEdit) => async (dispatch) => {
   const data = await response.json();
   dispatch(receiveReviews(data));
   return data;
+};
+const receiveReview = (review) => {
+  return {
+    type: SET_REVIEW,
+    payload: review,
+  };
 };
 
 const initialState = {allIds: [], byId: {}};
@@ -82,6 +87,15 @@ export default function reviewsReducer(  state=initialState, action){
       newState['byId']=byIds
       newState['allIds']=allIdsArray
       return newState;
+          case SET_REVIEW:
+             allIdsArray = [...state.allIds]
+             byIds = {...state.byId}
+             allIdsArray.push(action.payload.id)
+             byIds[action.payload.id] = action.payload
+             newState['byId'] = byIds
+             newState['allIds'] = allIdsArray
+             return newState;
+
       case REMOVE_REVIEW:
             allIdsArray=state.allIds.filter((element)=>element!==action.reviewId)
             byIds={...state.byId}
