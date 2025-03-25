@@ -1,0 +1,45 @@
+.updated_container {
+    max-width: 600px; 
+    margin: 20px auto; /* Center the form horizontally */
+    padding: 20px; /* Add some padding */
+    border: 1px solid #ccc; /* Add a border */
+    border-radius: 8px; /* Round the corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    background-color: #f9f9f9; /* Set a light background color */
+}
+
+h2 {
+    text-align: center; /* Center the heading */
+}
+
+form {
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Stack elements vertically */
+}
+
+label {
+    margin-bottom: 5px; /* Space between label and input */
+}
+
+input,
+textarea {
+    margin-bottom: 15px; 
+    padding: 10px; 
+    border: 1px solid #ccc;
+    border-radius: 4px; 
+    font-size: 16px;
+}
+
+button {
+    padding: 10px; /* Padding for the button */
+    background-color: #cdc28e; /* Primary button color */
+    color: white; /* Text color */
+    border: none; /* Remove border */
+    border-radius: 4px; /* Round the corners */
+    cursor: pointer; /* Change cursor to pointer */
+    font-size: 16px; /* Increase font size */
+}
+
+button:hover {
+    background-color: #3d4435; /* Darker color on hover */
+}

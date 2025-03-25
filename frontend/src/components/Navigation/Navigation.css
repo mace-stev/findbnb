@@ -1,3 +1,4 @@
+/* Navigation.css */
 .navbarContainer {
     display: flex;
     flex-direction: column; 
@@ -38,6 +39,7 @@
     cursor: pointer; 
 }
 
+/* Navigation.css */
 .navbar_logo {
     display: flex;
     align-items: center;
@@ -62,7 +64,8 @@
 }
 
 .navbar_right {
-    margin-left: auto;
-    display: flex;
-    align-items: center; 
+    position:absolute;
+    right:10px;
+    bottom: 625px;
 }
+

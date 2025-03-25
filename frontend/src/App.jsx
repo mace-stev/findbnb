@@ -9,9 +9,10 @@ import LandingPage from './components/LandingPage';
 import './index.css';
 import LoginFormModal from './components/LoginFormModal';
 import Spots from './components/Spots/Spots';
-import SpotDetails from './components/SpotDetails/SpotDetails';
 import CreateSpot from './components/CreateSpot/CreateSpot';
-
+import GetSpotdetails from './components/GetSpotdetails';
+import UpdateSpot from './components/UpdateSpot/UpdateSpot';
+import Reviews from './components/Reviews';
 
 
 function Layout() {
@@ -43,26 +44,37 @@ const router = createBrowserRouter([
 
       {
         path: '/Spots',
-        element: < Spots/>,
+        element: < Spots />,
 
-      },
-      {
-         path: '/spotsdetails',
-          element: <SpotDetails/>,
       },
 
       {
-         path: '/createspot',
-         element:<CreateSpot/>
+        path: '/Spots/:id',
+        element: <GetSpotdetails />,
       },
 
+      
+
+      {
+        path: '/createspot',
+        element: <CreateSpot />,
+
+      },
+
+      {
+        path: '/spots/edit/:id',
+        element: < UpdateSpot />,
+
+      },
+      {
+          path: '/reviews',
+          element: <Reviews/>,
+      },
 
       {
         path: '/login',
         element: <LoginFormModal />
       }
-
-
 
     ]
   }
