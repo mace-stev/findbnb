@@ -55,7 +55,7 @@ const GetSpotdetails = () => {
             <h2>{name}</h2>
             <p>Location: {city}, {state}, {country}</p>
             <div className="container">
-                <h2 className="title">treetopBnB Gallery</h2>
+                <h2 className="title"></h2>
                 <div className="photo-gallery">
                     <div className="column">
                         <div className="photo">

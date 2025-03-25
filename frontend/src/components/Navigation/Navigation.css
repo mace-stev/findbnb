@@ -67,5 +67,21 @@
     position:absolute;
     right:10px;
     bottom: 625px;
+    top: -35%;
 }
 
+.navbar_right {
+    display: flex;
+    align-items: center; 
+}
+
+.create-spot-link {
+    margin-right: 20px; 
+    text-decoration: none;
+    color: #746255;
+    font-weight: bold; 
+}
+
+.create-spot-link:hover {
+    text-decoration: underline; 
+}

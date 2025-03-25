@@ -63,7 +63,7 @@ const Spots = () => {
               review:[]
             },
             {
-                id:3,
+                id: 3,
 
               ownerId: 3,
               address: "546 Walnut Lane",
