@@ -60,3 +60,19 @@
     border-bottom: 1px solid #ccc;
     padding: 10px 0;
 }
+.leave-review-button {
+    background-color: #9a9981; 
+    color: white; 
+    border: none; 
+    border-radius: 5px; 
+    padding: 12px 20px; 
+    font-size: 16px; 
+    cursor: pointer; 
+    transition: background-color 0.3s;
+    margin-top: 20px; 
+}
+
+
+.leave-review-button:hover {
+    background-color: #0056b3;
+}

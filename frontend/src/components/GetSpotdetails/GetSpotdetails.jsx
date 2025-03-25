@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getSpotdetailsThunk } from '../../store/spots';
 import './GetSpotdetails.css'
+import LoginFormModal from '../LoginFormModal';
 
-import largeImage from '../../images/outdoors.jpg'; // Use your preferred large image
+import largeImage from '../../images/outdoors.jpg'; 
 import smallImage1 from '../../images/cliffhouse.png';
 import smallImage2 from '../../images/treetop.png';
 import smallImage3 from '../../images/grapevine.png';
@@ -16,33 +17,37 @@ const GetSpotdetails = () => {
     const currentSpot = useSelector((state) => state.spots.currentSpot);
     const loading = useSelector((state) => state.spots.loading);
     const error = useSelector((state) => state.spots.error);
+    const isLoggedIn = useSelector((state) => state.user?.isLoggedIn)
 
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
     useEffect(() => {
         dispatch(getSpotdetailsThunk(id));
     }, [dispatch, id]);
 
-    // Loading state
+    
     if (loading) return <div>Loading...</div>;
 
-    // Error state
+   
     if (error) return <div>Error fetching spot: {error}</div>;
 
-    // No spot found
+    
     if (!currentSpot) return <div>No spot found.</div>;
 
-    // Destructure currentSpot and provide default values
+    
     const {
         name,
         city,
         state,
         country,
+        host = { firstName: 'Unknown', lastName: 'Host' },
         description,
         price,
         reviews = []
     } = currentSpot;
 
-    // Dummy average rating and review count
-    const averageRating = 4.5; // Dummy data
+    
+    const averageRating = 4.5; 
     const reviewCount = reviews.length;
 
     return (
@@ -73,12 +78,14 @@ const GetSpotdetails = () => {
                     </div>
                 </div>
             </div>
+            <p>Hosted by: {host.firstName} {host.lastName}</p>
             <p>Description: {description}</p>
+            
             <div className="callout-info">
                 <p>Price: ${price} per night</p>
                 <button onClick={() => alert("Feature coming soon")}>Reserve</button>
             </div>
-            {/* Rating and reviews section */}
+        
             <div className="review-summary">
                 <span className="star-icon">⭐</span>
                 {averageRating} {reviewCount > 0 && (
@@ -99,6 +106,12 @@ const GetSpotdetails = () => {
                         </div>
                     ))}
                 </div>
+            )}
+            {!isLoggedIn &&(
+                <button className="leave-review-button" onClick={() => alert("Please log in to leave a review.")}></button>
+            )}
+            {isModalOpen &&(
+                <LoginFormModal onClose={() =>setIsModalOpen(false)}/>
             )}
         </div>
     );
