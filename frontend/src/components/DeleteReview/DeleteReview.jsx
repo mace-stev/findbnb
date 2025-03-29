@@ -13,11 +13,11 @@ function DeleteReview({reviewId, spotId}){
     }
         return(<>
         
-          <h1>Confirm Delete</h1>
+          <h1 className="delete-review-title">Confirm Delete</h1>
           <h2>Are you sure you want to delete this review?</h2>
         
               <button type="button" className="delete-button"onClick={()=>{deleteReviewById(reviewId)}}>Yes (Delete Review)</button>
-              <button type="button"onClick={closeModal}>No (Keep Review)</button>
+              <button type="button" className="keep-button"onClick={closeModal}>No (Keep Review)</button>
          
         </>)
 }

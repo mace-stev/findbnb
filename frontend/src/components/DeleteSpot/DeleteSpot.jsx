@@ -15,11 +15,11 @@ function deleteSpotById(id){
 }
     return(<>
     
-      <h1>Confirm Delete</h1>
+      <h1 className="delete-spot-title">Confirm Delete</h1>
       <h2>Are you sure you want to remove the spot from the listings?</h2>
     
           <button className="delete-button" type="button" onClick={()=>{deleteSpotById(spotId)}}>Yes (Delete Spot)</button>
-          <button type="button"onClick={closeModal}>No (Keep Spot)</button>
+          <button type="button" className="keep-button"onClick={closeModal}>No (Keep Spot)</button>
      
     </>)
 }
