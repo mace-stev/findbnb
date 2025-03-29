@@ -18,12 +18,12 @@ module.exports = {
       },
       {
         spotId: 2,
-        url: "https://www.stockvault.net/data/2020/01/18/272608/thumb16.jpg",
-        preview: false
+        url: "https://onekindesign.com/wp-content/uploads/2019/10/Traditional-English-Manor-House-Jauregui-Architect-01-1-Kindesign.jpg",
+        preview: true
       },
       {
         spotId: 3,
-        url: "https://www.stockvault.net",
+        url: "https://static.schumacherhomes.com/umbraco/media/wvflutbh/image4.jpg?format=webp",
         preview: true
       }
     ], { validate: true });
