@@ -1,14 +1,14 @@
 
 import { csrfFetch } from './csrf';
 
-
 // ----ACTION TYPES---
 const GET_ALL_SPOTS = 'spots/GET_ALL_SPOTS';
-//const GET_SPOT = 'spots/GET_SPOT';
+const GET_SPOT_DETAILS = "spot details/GET_SPOT_DETAILS";
 const CREATE_SPOT = "create/CREATE_SPOT";
+const ADD_REVIEW = "review/ADD_REVIEW";
+const FETCH_SPOTS = "fetch/FETCH_SPOTS";
 const UPDATE_SPOT = "update/UPDATE_SPOT";
 const DELETE_SPOT = "delete/DELETE_SPOT";
-const GET_SPOT_DETAILS = "spot details/GET_SPOT_DETAILS";
 
 //ACTION CREATORS
 //----step  6 : package the data into an action object
@@ -36,10 +36,21 @@ export const createSpot = (newSpot) => ({
   payload: newSpot,
 });
 
+// Action creator for posting a review on a spot
+export const postReview = (reviewData) => ({
+  type: ADD_REVIEW,
+  payload: reviewData
+});
+
+export const fetchSpots = (spots) => ({
+    type: FETCH_SPOTS,
+    payload: spots,
+});
+
 // Action creator for updating an existing spot
-export const updateSpot = (spot) => ({
+export const updateSpot = (updatedSpot) => ({
   type: UPDATE_SPOT,
-  payload: spot,
+  payload: updatedSpot,
 });
 
 // Action creator for deleting a spot
@@ -48,7 +59,9 @@ export const deleteSpot = (spotId) => ({
   payload: spotId,
 });
 
-//----THUNKS----
+//THUNKS
+
+//getAllSpots
 
 export const getAllSpotsThunk = () => async (dispatch) => {
 
@@ -70,7 +83,7 @@ export const getAllSpotsThunk = () => async (dispatch) => {
   }
 }
 
-
+//GetSpotDetailsthunk
 
 export const getSpotdetailsThunk = (spotId) => async (dispatch) => {
   try {
@@ -86,8 +99,9 @@ export const getSpotdetailsThunk = (spotId) => async (dispatch) => {
       console.error('Error fetching spot:', error);
       
   }
-};
+}
 
+//createSpotThunk
 export const createSpotThunk = (newSpot) => async (dispatch) => {
   try {
       const response = await csrfFetch('/api/spots', {
@@ -97,56 +111,80 @@ export const createSpotThunk = (newSpot) => async (dispatch) => {
               'Content-Type': 'application/json',
           },
       });
+
       if (response.ok) {
           const createdSpot = await response.json();
-          dispatch(createSpot(createdSpot));
+          dispatch(createSpot(createdSpot)); 
+          return createdSpot; 
       } else {
           throw new Error('Failed to create spot');
       }
-  } catch (error) {
-      console.log('Error creating spot:', error.message);
+  } catch (e) {
+      console.log('Error creating spot:', e.message);
+      throw (e); 
   }
 };
 
+//---->postReviewThunk
 
-//---UpdateSpotThunk--->
+export const postReviewThunk = (spotId, reviewData) => async (dispatch) => {
+ 
+  const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(reviewData),
+  });
+  
+  if (response.ok) {
+      const data = await response.json();
+      dispatch({ type: 'ADD_REVIEW', payload: { spotId, review: data } });
+  } else {
+      
+      console.error('Failed to post review');
+  }
+};
+
+//FetchSpotsThunk
+export const fetchSpotsThunk = () => {
+    return async (dispatch) => {
+        try {
+            const response = await csrfFetch('/api/spots');
+            if (!response.ok) {
+                throw new Error('Failed to fetch spots');
+            }
+            const data = await response.json();
+            console.log('Fetched data:', data);
+            dispatch(fetchSpots(data)); 
+        } catch (e) {
+            console.error('Error fetching spots:', e);
+        }    
+    };
+};
+
+//UpdateSpotThunk
 export const updateSpotThunk = (spotId, updatedData) => async (dispatch) => {
-  try {
-      const intSpotId = parseInt(spotId, 10); // Convert to integer
-      console.log("Updating spot with ID:", intSpotId); // Log the ID
+    try {
+        const response = await csrfFetch(`/api/spots/${spotId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedData),
+        });
 
-      if (isNaN(intSpotId)) {
-          throw new Error("Invalid spot ID: must be a valid integer.");
-      }
+        if (!response.ok) {
+            throw new Error('Failed to update the spot');
+        }
 
-      const url = `/api/spots/${intSpotId}`; // Create the URL
-      console.log("Fetching URL:", url);
-
-      console.log("Updated data being sent:", updatedData); // Log updated data
-
-      const response = await csrfFetch(url, {
-          method: 'PUT',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(updatedData),
-      });
-
-      if (response.ok) {
-          const updatedSpot = await response.json();
-          console.log("Updated spot firing:", updatedSpot);
-          dispatch(updateSpot(updatedSpot));
-      } else {
-          const errorResponse = await response.json(); // Read the response body
-          console.error("Error response:", errorResponse); // Log error details
-          throw new Error('Failed to update spot');
-      }
-  } catch (error) {
-      console.error('Error updating spot:', error);
-  }
+        const updatedSpot = await response.json();
+        dispatch({ type: 'UPDATE_SPOT', payload: updatedSpot }); 
+    } catch (e) {
+        console.error('Error updating spot:', e);
+    }
 };
-
-//---->DeleteSpotThunk--->
+//DeleteSpotThunk
 export const deleteSpotThunk = (spotId) => async (dispatch) => {
   try {
       const response = await csrfFetch(`/api/spots/${spotId}`, {
@@ -157,14 +195,13 @@ export const deleteSpotThunk = (spotId) => async (dispatch) => {
       } else {
           throw new Error('Failed to delete spot');
       }
-  } catch (error) {
-      console.log('Error deleting spot:', error);
+  } catch (e) {
+      console.log('deleting spot:', e);
   }
 };
 
 
-
-//<-------REDUCERS----->
+// Reducers
 
 // Step 1: Normalizing our state
 const initialState = {
@@ -176,70 +213,99 @@ const initialState = {
 // Step 3: Reducer
 const spotsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_ALL_SPOTS: {
-      const spotsArr = action.payload.Spots;
-      const newState = { ...state }; 
-      newState.allSpots = spotsArr;
-      newState.byId = {};
-      
-      for (let spot of spotsArr) {
-        newState.byId[spot.id] = spot; 
+      case GET_ALL_SPOTS: {
+          const spotsArr = action.payload.Spots;
+          const newState = { ...state };
+          newState.allSpots = spotsArr;
+          newState.byId = {};
+          for (let spot of spotsArr) {
+              newState.byId[spot.id] = spot;
+          }
+          return newState;
       }
-      return newState;
+
+      // GetSpotDetails Reducer
+      case GET_SPOT_DETAILS: {
+          const spot = action.payload;
+          return {
+              ...state,
+              currentSpot: spot,
+          };
+      }
+
+      // CreateSpot Reducer
+      case CREATE_SPOT: {
+          const newSpot = action.payload;
+          const newState = {
+              ...state,
+              allSpots: [...state.allSpots, newSpot],
+              byId: { ...state.byId, [newSpot.id]: newSpot },
+              currentSpot: newSpot,
+          };
+          return newState;
+      }
+//Fetchspots Reducer
+
+case FETCH_SPOTS: {
+    const spotsArr = action.payload.Spots
+    const newState = { ...state};
+    newState.allSpots = spotsArr;
+    newState.byId = {};
+        
+    for (let spot of spotsArr) {
+        newState.byId[spot.id] = spot;
     }
+    return newState;
+}
 
+      // UpdateSpot Reducer
+      case UPDATE_SPOT: {
+          const updatedSpot = action.payload;
+          return {
+              ...state,
+              allSpots: state.allSpots.map(spot => 
+                  spot.id === updatedSpot.id ? updatedSpot : spot
+              ),
+              byId: { ...state.byId, [updatedSpot.id]: updatedSpot },
+              currentSpot: updatedSpot,
+          };
+      }
 
-//----->GetSpotDeatils Reducer----> 
+      // DeleteSpot Reducer
+      case DELETE_SPOT: {
+          const spotIdToDelete = action.payload.id;
+          const newState = { ...state };
+          newState.allSpots = newState.allSpots.filter(spot => spot.id !== spotIdToDelete);
+          delete newState.byId[spotIdToDelete];
+          return newState;
+      }
+
+      // Post Review Reducer
+      case ADD_REVIEW: {
+          const { spotId, review } = action.payload;
+          const spot = state.byId[spotId];
+
     
-    case GET_SPOT_DETAILS: {
-      const spot = action.payload; 
-      return {
-          ...state,
-          currentSpot: spot, 
-      };
-  }
- //----->CreateSpot Reducer----> 
- case 'UPDATE_SPOT': {
-  const updatedSpot = action.payload; 
-  return {
-      ...state,
-      allSpots: state.allSpots.map((spot) =>
-          spot.id === updatedSpot.id ? updatedSpot : spot
-      ),
-      byId: {
-          ...state.byId,
-          [updatedSpot.id]: updatedSpot, 
-      },
-      currentSpot: updatedSpot, 
-  };
-}
-  //----->UpdateSpot Reducer----> 
-  case UPDATE_SPOT: {
-    const updatedSpot = action.payload; 
-    return {
-        ...state,
-        allSpots: state.allSpots.map((spot) =>
-            spot.id === updatedSpot.id ? updatedSpot : spot 
-        ),
-        byId: {
-            ...state.byId,
-            [updatedSpot.id]: updatedSpot, 
-        },
-        currentSpot: updatedSpot,
-    };
-}
-//----->DeleteSpot Reducer----> 
-    case DELETE_SPOT: {
-      const spotIdToDelete = action.payload.id;
-      const newState = { ...state };
-      newState.allSpots = newState.allSpots.filter(spot => spot.id !== spotIdToDelete);
-      delete newState.byId[spotIdToDelete]; 
-      return newState;
-    }
+          if (spot) {
+              const updatedSpot = {
+                  ...spot,
+                  reviews: [...(spot.reviews || []), review],  
+              };
 
+              return {
+                  ...state,
+                  byId: {
+                      ...state.byId,
+                      [spotId]: updatedSpot, 
+                  },
+                  currentSpot: updatedSpot, 
+              };
+          }
+          return state; 
+      }
 
-    default:
-      return state;
+      default:
+          return state;
   }
 };
 

@@ -12,7 +12,7 @@ import './Spots.css';
 const Spots = () => {
     const dispatch = useDispatch(); 
     const allSpots = useSelector(state => state.spots.allSpots); 
-    const [isLoaded, setIsLoaded] = useState(false); 
+    const [isLoaded, setIsLoaded] = useState(true); 
 
     useEffect(() => {
         const getSpots = async () => {
@@ -22,13 +22,12 @@ const Spots = () => {
         getSpots(); // Call the function to get spots 
     }, [dispatch]); // Dependency array with dispatch 
 
-    // Optional loading state 
+    
     if (!isLoaded) return <div>Loading...</div>; 
 
-    // Check if there are no spots available 
+
     if (allSpots.length === 0) return <div>No spots available</div>; 
 
-    // Example spots array with the imported image
     const spotsData = [
         {
             id: 1,

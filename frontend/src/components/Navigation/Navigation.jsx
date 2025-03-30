@@ -47,7 +47,7 @@ function Navigation({ isLoaded }) {
 
     return (
         <nav className="navbarContainer">
-            {/* Render top navigation only if not on the landing page */}
+            
             {!isLandingPage && (
                 <div className="navbar_top">
                     <div className="navigation_controls">
@@ -56,7 +56,7 @@ function Navigation({ isLoaded }) {
                         <NavIcon Icon={FaTimes} onClick={() => handleIconClick('close')} className="nav_icon" />
                         <NavIcon Icon={FaHome} onClick={() => handleIconClick('home')} className="nav_icon" />
                         
-                        {/* Search Input */}
+                        
                         <input 
                             type="text" 
                             placeholder="Search..." 
@@ -80,7 +80,8 @@ function Navigation({ isLoaded }) {
                         Create A New Spot
                     </NavLink>
                 )}
-                {isLoaded && <ProfileButton user={sessionUser} />}
+                {isLoaded && (<ProfileButton user={sessionUser} />
+            )}
                 
             </div>
         </nav>

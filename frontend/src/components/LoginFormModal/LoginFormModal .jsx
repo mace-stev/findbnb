@@ -13,7 +13,7 @@ function LoginFormModal() {
 
   const handleSubmit = async (e) => {
       e.preventDefault();
-      setErrors({}); // Reset errors on submit
+      setErrors({}); // 
 
       return dispatch(sessionActions.login({ credential, password }))
       .then(closeModal)

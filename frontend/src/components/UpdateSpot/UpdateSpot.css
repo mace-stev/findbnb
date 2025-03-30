@@ -1,45 +1,45 @@
 .updated_container {
     max-width: 600px; 
-    margin: 20px auto; /* Center the form horizontally */
-    padding: 20px; /* Add some padding */
-    border: 1px solid #ccc; /* Add a border */
-    border-radius: 8px; /* Round the corners */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-    background-color: #f9f9f9; /* Set a light background color */
+    margin: 20px auto; 
+    padding: 20px; 
+    border: 10px solid #ccc;
+    border-radius: 8px; 
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
+    background-color: #f9f9f9; 
 }
 
 h2 {
-    text-align: center; /* Center the heading */
+    text-align: center; 
 }
 
 form {
-    display: flex; /* Use flexbox for layout */
-    flex-direction: column; /* Stack elements vertically */
+    display: flex; 
+    flex-direction: column; 
 }
-
 label {
-    margin-bottom: 5px; /* Space between label and input */
+    margin-bottom: 5px; 
 }
 
 input,
-textarea {
+.textarea {
     margin-bottom: 15px; 
     padding: 10px; 
-    border: 1px solid #ccc;
+    border: 1px solid #b39d71;
     border-radius: 4px; 
     font-size: 16px;
+    background-color: #e2ca94;
 }
 
 button {
-    padding: 10px; /* Padding for the button */
-    background-color: #cdc28e; /* Primary button color */
-    color: white; /* Text color */
-    border: none; /* Remove border */
-    border-radius: 4px; /* Round the corners */
-    cursor: pointer; /* Change cursor to pointer */
-    font-size: 16px; /* Increase font size */
+    padding: 10px; 
+    background-color: #c5ad7a;
+    color:#3d4435; 
+    border: none; 
+    border-radius: 4px; 
+    cursor: pointer; 
+    font-size: 20px; 
 }
 
 button:hover {
-    background-color: #3d4435; /* Darker color on hover */
+    background-color: #3d4435; 
 }

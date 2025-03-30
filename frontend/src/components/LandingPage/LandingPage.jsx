@@ -7,7 +7,7 @@ const LandingPage = () => {
         <div className="landing-page">
             <header className="header">
                 <h1>Welcome to TreetopBnB</h1>
-                <h2>Elevate your stay at TreetopBnB Cabins</h2>
+                <h2>Your Home Away From Home!</h2>
             </header>
             <div className="image-container">
                 <img src={outdoorImage} alt="Blissful Outdoors" className="landing-image" />

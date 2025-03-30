@@ -28,28 +28,28 @@ const UpdateSpot = () => {
     useEffect(() => {
         console.log("current spot here :", currentSpot)
         if (currentSpot) {
-            setFormData(currentSpot); // Set form data if currentSpot is found
+            setFormData(currentSpot); 
         }
     }, [currentSpot]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value }); // Update form data
+        setFormData({ ...formData, [name]: value }); 
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         
-        dispatch(updateSpotThunk(id, formData)); // Dispatch the update action
-        setIsUpdated(true); // Set updated state to true
+        dispatch(updateSpotThunk(id, formData)); 
+        setIsUpdated(true); 
     };
 
     if (!currentSpot) {
-        return <div>No spot found.</div>; // Return message if no spot is found
+        return <div>No spot found.</div>; 
     }
 
     if (isUpdated) {
-        return <Navigate to={`/spots/${id}`} />; // Redirect after update
+        return <Navigate to={`/spots/${id}`} />; 
     }
 
     return (

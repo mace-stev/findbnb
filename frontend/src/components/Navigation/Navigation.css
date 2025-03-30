@@ -64,10 +64,11 @@
 }
 
 .navbar_right {
-    position:absolute;
-    right:10px;
-    bottom: 625px;
-    top: -35%;
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    
+    
 }
 
 .navbar_right {

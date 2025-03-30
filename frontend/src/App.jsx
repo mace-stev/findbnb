@@ -12,8 +12,11 @@ import Spots from './components/Spots/Spots';
 import CreateSpot from './components/CreateSpot/CreateSpot';
 import GetSpotdetails from './components/GetSpotdetails';
 import UpdateSpot from './components/UpdateSpot/UpdateSpot';
-import Reviews from './components/Reviews';
-
+import ReviewFormModal from './components/ReviewFormModal';
+import ManageSpots from './components/ManageSpots';
+import ManageSpotTile from './components/ManageSpotTile/ManageSpotTile';
+import DeleteSpot from './components/DeleteSpot';
+import ConfirmationModal from './components/ConfirmationModal';
 
 function Layout() {
   const dispatch = useDispatch();
@@ -37,6 +40,13 @@ const router = createBrowserRouter([
   {
     element: <Layout />,
     children: [
+
+
+      {
+        path: '/login',
+        element: <LoginFormModal />,
+      },
+
       {
         path: '/',
         element: <LandingPage />,
@@ -53,8 +63,6 @@ const router = createBrowserRouter([
         element: <GetSpotdetails />,
       },
 
-      
-
       {
         path: '/createspot',
         element: <CreateSpot />,
@@ -62,19 +70,33 @@ const router = createBrowserRouter([
       },
 
       {
-        path: '/spots/edit/:id',
+        path: '/updatespot/:id',
         element: < UpdateSpot />,
-
-      },
-      {
-          path: '/reviews',
-          element: <Reviews/>,
       },
 
       {
-        path: '/login',
-        element: <LoginFormModal />
+        path: '/delete/:id',
+        element: <DeleteSpot />,
+      },
+
+     {
+       path: '/confirmationmodal',
+       element:<ConfirmationModal/>,
+     },
+
+      {
+        path: '/reviews',
+        element: <ReviewFormModal />,
+      },
+      {
+        path: '/managespots',
+        element: <ManageSpots />,
+      },
+      {
+        path: '/mangespottile',
+        element: <ManageSpotTile />
       }
+
 
     ]
   }
