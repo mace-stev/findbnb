@@ -9,8 +9,11 @@ const ADD_REVIEW = "review/ADD_REVIEW";
 const FETCH_SPOTS = "fetch/FETCH_SPOTS";
 const UPDATE_SPOT = "update/UPDATE_SPOT";
 const DELETE_SPOT = "delete/DELETE_SPOT";
-//const GET_REVIEWS_LIST = "review list/GET_REVIEWS_LIST";
 const LOAD_REVIEWS = "load reviews/LOAD_REVIEWS"
+const DELETE_REVIEW_REQUEST = 'DELETE_REVIEW_REQUEST';
+const DELETE_REVIEW_SUCCESS = 'DELETE_REVIEW_SUCCESS';
+const DELETE_REVIEW_FAILURE = 'DELETE_REVIEW_FAILURE';
+
 
 //ACTION CREATORS
 //----step  6 : package the data into an action object
@@ -48,16 +51,6 @@ export const loadReviews = (spotId, reviews) => ({
 });
 
 
-
-// Action creator for geting reviews list
-//export const getReviewsList = (spotId, reviews) => {
-    //return {
-       // type: GET_REVIEWS_LIST,
-       // payload: { spotId, reviews }
-   // }
-//};
-
-
 // Action creator for posting a review on a spot
 export const postReview = (reviewData) => ({
     type: ADD_REVIEW,
@@ -82,6 +75,23 @@ export const deleteSpot = (spotId) => ({
     type: DELETE_SPOT,
     payload: spotId,
 });
+
+
+// Action creators for deleting a review
+export const deleteReviewRequest = () => ({
+    type: DELETE_REVIEW_REQUEST,
+});
+
+export const deleteReviewSuccess = (reviewId) => ({
+    type: DELETE_REVIEW_SUCCESS,
+    payload: reviewId,
+});
+
+export const deleteReviewFailure = (error) => ({
+    type: DELETE_REVIEW_FAILURE,
+    payload: error,
+});
+
 
 //THUNKS
 
@@ -164,18 +174,6 @@ export const loadReviewsThunk = (spotId) => async (dispatch) => {
     }
 };
 
-//getReviewListThunk
-//export const getReviewsThunk = (spotId) => async (dispatch) => {
-    //const response = await csrfFetch(`/api/spots/${spotId}/reviews`);
-    //if (response.ok) {
-       // const reviews = await response.json();
-       // dispatch(getReviewsList(spotId, reviews));
-    //} else {
-       // console.error('Failed to fetch reviews');
-   // }
-//};
-
-
 //postReviewThunk
 
 export const postReviewThunk = (spotId, reviewData) => async (dispatch) => {
@@ -254,6 +252,23 @@ export const deleteSpotThunk = (spotId) => async (dispatch) => {
     }
 };
 
+//DeleteReviewThunk
+export const deleteReviewThunk = (reviewId, spotId) => {
+    return async (dispatch) => {
+        dispatch({ type: DELETE_REVIEW_REQUEST });
+
+        try {
+            await csrfFetch(`/reviews/${reviewId}`, {
+                method: 'DELETE', 
+            });
+            dispatch({ type: DELETE_REVIEW_SUCCESS, payload: reviewId });
+            dispatch(loadReviewsThunk(spotId)); 
+        } catch (error) {
+            dispatch({ type: DELETE_REVIEW_FAILURE, payload: error.message });
+            console.error('Error deleting review:', error);
+        }
+    };
+};
 
 // Reducers
 
@@ -261,7 +276,7 @@ export const deleteSpotThunk = (spotId) => async (dispatch) => {
 const initialState = {
     allSpots: [],
     byId: {},
-    
+
 };
 
 // Step 3: Reducer
@@ -334,61 +349,70 @@ const spotsReducer = (state = initialState, action) => {
             return newState;
         }
 
-         // Post Review Reducer
-         case 'ADD_REVIEW': {
+        // Post Review Reducer
+        case 'ADD_REVIEW': {
             const { spotId, review } = action.payload;
-            const spot = state.byId[spotId]; // Access the spot using the spotId
-        
+            const spot = state.byId[spotId];
+
             if (spot) {
                 const updatedSpot = {
                     ...spot,
-                    reviews: [...(spot.reviews || []), review], // Append the new review to the existing reviews
+                    reviews: [...(spot.reviews || []), review],
                 };
-        
+
                 return {
                     ...state,
                     byId: {
                         ...state.byId,
-                        [spotId]: updatedSpot, // Update the spot in the byId map
+                        [spotId]: updatedSpot,
                     },
-                    currentSpot: updatedSpot, // Update the currentSpot to reflect the new review
+                    currentSpot: updatedSpot,
                 };
             }
-            return state; // If spot is not found, return the current state
+            return state;
         }
-      //LoadReviews Reducer
+        //LoadReviews Reducer
         case LOAD_REVIEWS: {
-          const { spotId, reviews } = action.payload;
-           if (!Array.isArray(reviews)) {
-              console.error('Expected reviews to be an array but received:', reviews);
-               return state; 
+            const { spotId, reviews } = action.payload;
+            if (!Array.isArray(reviews)) {
+                console.error('Expected reviews to be an array but received:', reviews);
+                return state;
             }
 
-            
-            const spot = state.byId[spotId] || {}; 
-            const updatedSpot = { ...spot, reviews }; 
 
-           return {
-               ...state,
-             byId: {
-                  ...state.byId,
-                   [spotId]: updatedSpot, 
-        },
-           };
-       }
-    //Load Reviews Reducer   
-       // case LOAD_REVIEWS: {
-            //const { spotId, reviews } = action.payload;
-            //return {
-               // ...state,
-                //byId: {
-                    //...state.byId,
-                   // [spotId]: reviews, // Store the fetched reviews under the spotId
-               // },
-           // };
-        //}
+            const spot = state.byId[spotId] || {};
+            const updatedSpot = { ...spot, reviews };
+
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [spotId]: updatedSpot,
+                },
+            };
+        }
+        //DeleteReview Reducer
+        case DELETE_REVIEW_REQUEST:
+            return {
+                ...state,
+                loading: true,
+                error: null,
+            };
+        case DELETE_REVIEW_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                reviews: state.reviews.filter(review => review.id !== action.payload),
+            };
+        case DELETE_REVIEW_FAILURE:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            };
         default:
             return state;
     }
 };
+
 export default spotsReducer;

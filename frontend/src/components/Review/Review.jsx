@@ -1,17 +1,23 @@
-import './Review.css'; 
+import { useState } from 'react';
+import ReviewConfirmModal from '../ReviewConfirmModal'; 
 
-const Review = ({ review }) => {
-    
-    if (!review || !review.createdAt) {
-        return <div>Review data is not available.</div>; 
-    }
+const Review = ({ review, onDelete }) => {
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
 
-    
+    const handleDeleteClick = () => {
+        setShowConfirmModal(true);
+    };
+
+    const handleDeleteConfirm = () => {
+        onDelete(review.id); // Call the delete function passed as a prop
+        setShowConfirmModal(false);
+    };
+
+    const handleDeleteCancel = () => {
+        setShowConfirmModal(false);
+    };
     const formattedDate = new Date(review.createdAt).toLocaleDateString();
-
-
     const userName = review.user && review.user.firstName ? review.user.firstName : 'Confirmed Guest';
-
     return (
         <div className="review">
             <h3>
@@ -25,7 +31,17 @@ const Review = ({ review }) => {
                 {Array.from({ length: 5 - review.stars }, (_, index) => (
                     <span key={index + review.stars} className="star-icon empty">☆</span> 
                 ))}
-            </div>
+            <button onClick={handleDeleteClick}>Delete</button>
+
+            {showConfirmModal && (
+                <ReviewConfirmModal 
+                    title="Confirm Delete" 
+                    message="Are you sure you want to delete this review?"
+                    onConfirm={handleDeleteConfirm} 
+                    onCancel={handleDeleteCancel} 
+                />
+            )}
+        </div>
         </div>
     );
 };
