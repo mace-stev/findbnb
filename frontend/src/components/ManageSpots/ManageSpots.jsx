@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchSpotsThunk, deleteSpotThunk } from '../../store/spots';
 import ManageSpotTile from '../ManageSpotTile/ManageSpotTile';
-import ConfirmationModal from '../ConfirmationModal/ConfirmationModal'; // Import the modal
+import ConfirmationModal from '../ConfirmationModal/ConfirmationModal'; 
 import './ManageSpots.css';
 
 const ManageSpots = () => {
@@ -36,8 +36,8 @@ const ManageSpots = () => {
     };
 
     const handleModalClose = () => {
-        setIsModalOpen(false); // Close the modal without deleting
-        setSpotToDelete(null); // Clear the spot ID
+        setIsModalOpen(false); 
+        setSpotToDelete(null); 
     };
 
     if (!isLoaded) return <div>Loading...</div>;
@@ -55,7 +55,7 @@ const ManageSpots = () => {
                     <ManageSpotTile 
                         key={spot.id} 
                         spot={spot} 
-                        onDeleteClick={handleDeleteClick} // Pass delete click handler
+                        onDeleteClick={handleDeleteClick} 
                     />
                 ))
             )}

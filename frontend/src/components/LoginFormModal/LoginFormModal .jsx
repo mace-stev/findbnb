@@ -6,7 +6,7 @@ import './LoginFormModal.css';
 
 function LoginFormModal() {
   const dispatch = useDispatch();
-  const { closeModal } = useModal(); // Using the closeModal function from context
+  const { closeModal } = useModal(); 
   const [credential, setCredential] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});

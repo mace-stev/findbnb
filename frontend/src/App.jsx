@@ -17,6 +17,8 @@ import ManageSpots from './components/ManageSpots';
 import ManageSpotTile from './components/ManageSpotTile/ManageSpotTile';
 import DeleteSpot from './components/DeleteSpot';
 import ConfirmationModal from './components/ConfirmationModal';
+import ReviewList from './components/ReviewList';
+import Review from './components/Review';
 
 function Layout() {
   const dispatch = useDispatch();
@@ -83,9 +85,18 @@ const router = createBrowserRouter([
        path: '/confirmationmodal',
        element:<ConfirmationModal/>,
      },
+     {
+         path: '/spots/:spotId/review',
+         element: <Review/>
+     },
+
+     {
+      path: '/spots/:spotId/reviews',
+      element: <ReviewList/>
+     },
 
       {
-        path: '/reviews',
+        path: '/reviewformModal',
         element: <ReviewFormModal />,
       },
       {
