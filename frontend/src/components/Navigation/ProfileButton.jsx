@@ -57,11 +57,10 @@ function ProfileButton({ user }) {
         <ul className={ulClassName} ref={ulRef}>
           {typeof user?.allIds?.[0] === "number" ? (
             <>
-              <li>{currUser?.username}</li>
-              <li>{currUser?.firstName} {currUser?.lastName}</li>
-              <li>{currUser?.email}</li>
-              <li><NavLink to="/spots/current">Manage Spots</NavLink></li>
-              <li>
+              <li className="profile-dropdown-li">{`Hello ${currUser?.username}`}</li>
+              <li className="profile-dropdown-li">{currUser?.email}</li>
+              <li className="profile-dropdown-manage-spots-li"><NavLink className="manage-spots-nav" to="/spots/current">Manage Spots</NavLink></li>
+              <li className="profile-dropdown-li">
                 <button onClick={logout}>Log Out</button>
               </li>
             </>

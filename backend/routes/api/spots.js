@@ -556,9 +556,9 @@ router.post(
         },
       });
       if (userReview) {
-        res
+       return res
           .status(500)
-          .json({ message: "User already has a review for this spot" });
+          .json({ message: "Review already exists for this spot" });
       }
 
       const spot = await Spot.findByPk(spotId);
