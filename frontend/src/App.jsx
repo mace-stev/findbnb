@@ -19,6 +19,7 @@ import DeleteSpot from './components/DeleteSpot';
 import ConfirmationModal from './components/ConfirmationModal';
 import ReviewList from './components/ReviewList';
 import Review from './components/Review';
+import DeleteReview from './components/DeleteReview';
 
 function Layout() {
   const dispatch = useDispatch();
@@ -89,6 +90,13 @@ const router = createBrowserRouter([
          path: '/spots/:spotId/review',
          element: <Review/>
      },
+      
+      {
+        path: '/delete/:spotId/review',
+        element: <DeleteReview/>
+      },
+
+
 
      {
       path: '/spots/:spotId/reviews',

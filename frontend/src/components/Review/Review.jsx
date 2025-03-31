@@ -9,7 +9,7 @@ const Review = ({ review, onDelete }) => {
     };
 
     const handleDeleteConfirm = () => {
-        onDelete(review.id); // Call the delete function passed as a prop
+        onDelete(review.id); 
         setShowConfirmModal(false);
     };
 

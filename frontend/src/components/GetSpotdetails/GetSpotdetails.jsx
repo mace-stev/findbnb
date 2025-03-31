@@ -97,9 +97,10 @@ const GetSpotDetails = () => {
     
             <div className="review-summary">
                 <h3>Reviews</h3>
+                
                 <div className="star-rating">
                     {Array.from({ length: Math.floor(averageRating) }, (_, index) => (
-                        <span key={index} className="star-icon">★</span>
+                        <span key={index} className="star-icon filled">★</span>
                     ))}
                     {averageRating % 1 !== 0 && <span className="star-icon">☆</span>} 
                     <span>({reviews.length})</span>
@@ -110,6 +111,7 @@ const GetSpotDetails = () => {
                 <p>Be the first to post a review!</p>
             ) : (
                 <div className="reviews-list">
+                    
                     {reviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((review, index) => (
                         <div key={index} className="review">
                             <p>{review.firstName} - {new Date(review.createdAt).toLocaleString("default", { month: "long", year: "numeric" })}</p>
