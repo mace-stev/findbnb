@@ -3,10 +3,11 @@ import { useModal } from '../../context/Modal';
 import { FaStar } from "react-icons/fa"
 import { useState } from "react";
 import { addReview } from "../../store/reviewsStore";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 
 function NewReview({spotId}) {
+    const result= useSelector(state=>state.reviews)
     const { closeModal } = useModal();
     const [star1, setStar1] =useState({ fill: 'white', stroke: 'black', strokeWidth: 50 })
     const [star2, setStar2] =useState({ fill: 'white', stroke: 'black', strokeWidth: 50 })
@@ -16,11 +17,11 @@ function NewReview({spotId}) {
     const starArray=[setStar1,setStar2, setStar3, setStar4, setStar5]
     const [rating, setRating] = useState(0)
     const [review, setReview] = useState("")
+    
     const dispatch = useDispatch()
     async function onSubmit(e){
         e.preventDefault()
-        console.log(spotId)
-        await dispatch(addReview({
+       await dispatch(addReview({
             spotId: spotId,
             review: review,
             stars: rating
@@ -31,6 +32,9 @@ function NewReview({spotId}) {
     return (<>
         <form className="new-review-form" onSubmit={(e)=>{onSubmit(e)}}>
             <h1 className="new-review-h1">How was your stay?</h1>
+            { result?.allIds[0] ?
+            <p className="error">Review already exists for this spot</p> :{}
+}
             <textarea placeholder="Leave your review here..." className="review-textarea" name="review" onChange={(e)=>{setReview(e.target.value)}}></textarea>
             <div className="rating-container">
                 <div className="star-container">
