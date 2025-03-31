@@ -10,7 +10,7 @@ function LoginFormModal() {
     const [credential, setCredential] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState([]);
-    const [showReset, setShowReset] = useState(false); // State to control password reset modal
+    const [showReset, setShowReset] = useState(false); 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -41,16 +41,14 @@ function LoginFormModal() {
 
     const handlePasswordReset = async (e) => {
         e.preventDefault();
-        // Implement your password reset logic here.
-        // You might want to make an API call to send a password reset email.
-
-        // Example placeholder logic:
-        const response = await dispatch(sessionActions.resetPassword({ credential })); // Adjust according to your action creator
+       
+      
+        const response = await dispatch(sessionActions.resetPassword({ credential })); 
         if (response.success) {
-            alert('Password reset email sent!'); // Notify the user
-            setShowReset(false); // Close the reset form
+            alert('Password reset email sent!'); 
+            setShowReset(false); 
         } else {
-            setErrors(response.errors); // Handle any errors
+            setErrors(response.errors); 
         }
     };
 

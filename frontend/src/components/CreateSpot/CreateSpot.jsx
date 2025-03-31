@@ -75,11 +75,11 @@ const CreateSpot = () => {
         try {
             const createdSpot = await dispatch(createSpotThunk(payload));
             if (createdSpot) {
-                navigate(`/spots/${createdSpot.id}`); // new spot's details page
+                navigate(`/spots/${createdSpot.id}`); 
             }
         } catch (error) {
             console.error('Error creating spot:', error);
-            // Handle error 
+            
         }
     };
 
