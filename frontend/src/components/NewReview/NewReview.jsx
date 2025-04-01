@@ -33,7 +33,7 @@ function NewReview({spotId, userId}) {
         <form className="new-review-form" onSubmit={(e)=>{onSubmit(e)}}>
             <h1 className="new-review-h1">How was your stay?</h1>
             { result?.allIds[0]===userId ?
-            <p className="error">Review already exists for this spot</p> :{}
+            <p className="error">Review already exists for this spot</p> :<p></p>
 }
             <textarea placeholder="Leave your review here..." className="review-textarea" name="review" onChange={(e)=>{setReview(e.target.value)}}></textarea>
             <div className="rating-container">
